@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/civicpd/admin</path>
+    <page_callback>CRM_Civicpd_Page_CPDAdmin</page_callback>
+    <title>CPD Administration Page</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/civicpd/report</path>
+    <page_callback>CRM_Civicpd_Page_CPDReport</page_callback>
+    <title>Continuing Professional Development Reporting Page</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/civicpd/categories</path>
+    <page_callback>CRM_Civicpd_Page_Categories</page_callback>
+    <title>Categories</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/civicpd/EditCategories</path>
+    <page_callback>CRM_Civicpd_Page_Edit</page_callback>
+    <title>Edit</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/civicpd/EditReport</path>
+    <page_callback>CRM_Civicpd_Page_EditReport</page_callback>
+    <title>EditReport</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+</menu>
