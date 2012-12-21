@@ -33,7 +33,9 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
 					$contact_id = $session->get('userID');
 				}
 				
-				$category_id = $_REQUEST['catid'];
+				if(isset($_REQUEST['catid'])) {
+					$category_id = $_REQUEST['catid'];
+				}
 				
 				// Find the Year we are interested in
 				// Default to this year
@@ -100,6 +102,87 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
 					
    					break;
    					
+   				case 'edit':
+  				
+					// Edit an existing activity under this category for this contact for this time period.
+   					CRM_Utils_System::setTitle(ts('Edit A CPD Activity'));
+   					
+   					if(isset($_GET['activity_id'])) {
+   						$activity_id = $_GET['activity_id'];
+   					} else {
+   						// No activity_id, nothing to do, so redirect to the report page
+   						$querystring = "/civicrm/civicpd/report";
+    					header("Location: $querystring");
+   					}
+   					
+   					$sql = "SELECT civi_cpd_categories.category, 
+   							civi_cpd_activities.credit_date, 
+   							civi_cpd_activities.credits, 
+   							civi_cpd_activities.activity, 
+   							civi_cpd_activities.notes 
+   							FROM civi_cpd_activities 
+   							INNER JOIN civi_cpd_categories 
+   							ON civi_cpd_categories.id = civi_cpd_activities.category_id 
+   							WHERE civi_cpd_activities.id = " . $activity_id;
+   							
+   					$dao = CRM_Core_DAO::executeQuery($sql);
+   					
+   					while( $dao->fetch( ) ) { 
+   						$category		= $dao->category;
+   						$credit_date	= $dao->credit_date;
+   						$credits		= $dao->credits;
+   						$activity		= $dao->activity;
+   						$notes			= $dao->notes;
+   					}
+
+   					
+   					while( $dao->fetch( ) ) { 
+   						$category = $dao->category;
+   					}
+   					
+   					$output = '<form method="post" action="/civicrm/civicpd/report">
+  								<input type="hidden" value="update" name="action">
+  								<input type="hidden" value="'. $activity_id .'" name="activity_id">
+  									<table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+    									<tbody>
+      										<tr>
+        										<td width="5%" valign="top" nowrap="nowrap">Date:</td>
+       	 										<td width="60%"><input type="text" class="frm" id="credit_date" name="credit_date" value=' . $credit_date . '></td>
+      										</tr>
+      										<tr>
+        										<td width="5%" valign="top" nowrap="nowrap">Activity:</td>
+        										<td width="60%" nowrap="nowrap">
+          											<table width="100%" cellspacing="0" cellpadding="0" border="0">
+            											<tbody>
+              												<tr>
+                												<td width="64%"><input type="text" size="35" class="frm" name="activity" value="' . $activity . '"></td>
+                												<td width="15%" valign="top">Credits:</td>
+                												<td><input type="text" maxlength="4" size="4" class="frm" name="credits" value="' . $credits . '"></td>
+              												</tr>
+            											</tbody>
+          											</table>
+        										</td>
+      										</tr>
+      										<tr>
+        										<td width="5%" valign="top" nowrap="nowrap">Notes:</td>
+        										<td width="60%"><textarea class="frm" rows="4" cols="42" name="notes">' . $notes . '</textarea></td>
+      										</tr>
+      										<tr>
+        										<td align="center"><input type="submit" value="Submit" class="form-submit-inline" name="Submit"></td>
+        										<td></td>
+      										</tr>
+    									</tbody>
+  									</table>
+								</form>';
+					
+					$this->assign("sub_title", "Use the form below to update this CPD <em>" . $category . "</em> activity"); 
+					
+					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/report?clear=1\';" />'); 
+					
+					$this->assign('output', $output);
+					
+   					break;
+   					
 				case 'update':
 					
 					// Clear the cpd message
@@ -109,6 +192,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    					CRM_Utils_System::setTitle(ts('Update Your CPD Activities'));
 										
    					$sql = "SELECT civi_cpd_categories.category
+   								, civi_cpd_activities.id AS activity_id
    								, civi_cpd_activities.credit_date
    								, civi_cpd_activities.credits
    								, civi_cpd_activities.activity
@@ -147,14 +231,14 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    					
    						//There's are activities here so put them in a table
    						while( $dao->fetch( ) ) { 
-   						
+   							$activity_id = $dao->activity_id;
    							$category = $dao->category;
    							$output .= '<tr>
     									<td width="15%" valign="top">'. date("M d, Y", strtotime("$dao->credit_date")) .'</td>
     									<td width="5%" align="center" valign="top">'. abs($dao->credits) .'</td>
     									<td width="20%" valign="top">'. $dao->activity .'</td>
     									<td width="60%" valign="top">'. $dao->notes .'</td>
-    									<td width="10%" valign="top" style="text-align:center;"><a href="#">edit</a></td>
+    									<td width="10%" valign="top" style="text-align:center;"><a href="/civicrm/civicpd/EditReport?action=edit&amp;activity_id=' . $activity_id . '">edit</a></td>
   									</tr>';
   									
   						}

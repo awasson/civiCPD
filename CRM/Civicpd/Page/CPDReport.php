@@ -61,7 +61,6 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
    				
    				$sql = "INSERT INTO civi_cpd_activities(contact_id, category_id, credit_date, credits, activity, notes) VALUES('".$contact_id."','".$category_id."','".$credit_date."','".$credits."','".$activity."','".$notes."')";
    				CRM_Core_DAO::executeQuery($sql);
-   				// print $sql;
    				
    				break;
    				
@@ -69,17 +68,15 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
 				// Clear the cpd message
 				$_SESSION['cpd_message'] = '';
 			
-   				// Update Category where civi_cpd_activities.id = $activity_id 
+   				// Update CDPD ctivity where civi_cpd_activities.id = $activity_id 
    				if(isset($_POST['activity_id'])){
    					$activity_id 	= $_POST['activity_id'];
-   					$contact_id		= $_POST['contact_id'];
-   					$category_id	= $_POST['category_id'];
    					$credit_date	= $_POST['credit_date'];
    					$credits		= $_POST['credits'];
-   					$activity		= $_POST['activity'];
-   					$notes			= $_POST['notes'];
-   					$sql = "UPDATE civi_cpd_activities SET contact_id = ".$contact_id.", category_id = ".$category_id.", credit_date = '".$credit_date."', credits = '".$credits."', activity = '".$activity."', notes = '".$notes."' WHERE id =" . $activity_id;
-   					// CRM_Core_DAO::executeQuery($sql);
+   					$activity		= mysql_real_escape_string($_POST['activity']);
+   					$notes			= mysql_real_escape_string($_POST['notes']);
+   					$sql = "UPDATE civi_cpd_activities SET credit_date = '".$credit_date."', credits = ".$credits.", activity = '".$activity."', notes = '".$notes."' WHERE id =" . $activity_id;
+   					CRM_Core_DAO::executeQuery($sql);
    					print $sql;
    					 
    				}
