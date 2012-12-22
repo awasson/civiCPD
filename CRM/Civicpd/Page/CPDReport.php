@@ -52,21 +52,20 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
 	 		
 	 	switch ($action) {
   			case 'insert':
-  				// Clear the cpd message
+				// Clear the cpd message
 				$_SESSION['cpd_message'] = '';
   			
 				// Insert new CPD Activity based on contactid, date and category.
-				// TODO: Build in sanitation for input fields and put in some error trapping/correction
-   				$category_id	= $_POST['category_id'];
-   				$credit_date	= $_POST['credit_date'];
-   				$credits		= $_POST['credits'];
-   				$activity		= mysql_real_escape_string($_POST['activity']);
-   				$notes			= mysql_real_escape_string($_POST['notes']);
+				$category_id	= $_POST['category_id'];
+				$credit_date	= $_POST['credit_date'];
+				$credits		= $_POST['credits'];
+				$activity		= mysql_real_escape_string($_POST['activity']);
+				$notes			= mysql_real_escape_string($_POST['notes']);
    				
-   				$sql = "INSERT INTO civi_cpd_activities(contact_id, category_id, credit_date, credits, activity, notes) VALUES('".$contact_id."','".$category_id."','".$credit_date."','".$credits."','".$activity."','".$notes."')";
-   				CRM_Core_DAO::executeQuery($sql);
+				$sql = "INSERT INTO civi_cpd_activities(contact_id, category_id, credit_date, credits, activity, notes) VALUES('".$contact_id."','".$category_id."','".$credit_date."','".$credits."','".$activity."','".$notes."')";
+				CRM_Core_DAO::executeQuery($sql);
    				
-   				break;
+				break;
    				
 			case 'update':
 				// Clear the cpd message
@@ -130,16 +129,16 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
     // SUM(Activities) from the database for this contact, for this year, GROUP BY Categories
     $sql = "SELECT civi_cpd_categories.id AS id
     	, civi_cpd_categories.category AS category
-		, SUM(civi_cpd_activities.credits) AS credits
-		, civi_cpd_categories.minimum
-		, civi_cpd_categories.maximum
-		, civi_cpd_categories.description
-		FROM civi_cpd_categories
-		LEFT OUTER JOIN civi_cpd_activities
-		ON civi_cpd_activities.category_id = civi_cpd_categories.id
-		AND civi_cpd_activities.contact_id = " . $contact_id . "
-		AND EXTRACT(YEAR FROM civi_cpd_activities.credit_date) = " . $_SESSION["report_year"] . "
-		GROUP BY civi_cpd_categories.id";
+    	, SUM(civi_cpd_activities.credits) AS credits
+    	, civi_cpd_categories.minimum
+    	, civi_cpd_categories.maximum
+    	, civi_cpd_categories.description
+    	FROM civi_cpd_categories
+    	LEFT OUTER JOIN civi_cpd_activities
+    	ON civi_cpd_activities.category_id = civi_cpd_categories.id
+    	AND civi_cpd_activities.contact_id = " . $contact_id . "
+    	AND EXTRACT(YEAR FROM civi_cpd_activities.credit_date) = " . $_SESSION["report_year"] . "
+    	GROUP BY civi_cpd_categories.id";
 		
     $dao = CRM_Core_DAO::executeQuery($sql);
     
