@@ -1,17 +1,20 @@
-# Andrew Wasson December 21, 2012
+# Andrew Wasson December 22, 2012
 
-# Complete contact record tab code.
-	- Specifically the URL attribute so that it opens a page where admin users can 
-	- view, update, delete a contact's CPD record.
+ADD DELETE BUTTON FOR ACTIVITIES
+- Just a simple delete button to the editing page and then complete the code in CPDReport.php
 
-# Add multi-year capability for logging and reporting
-	- Change the $report_year variable to allow for a range of dates 
-	- from current to past dates.
+COMPLETE CONTACT RECORD TAB CODE
+- Specifically the URL attribute so that it opens a page where admin users can 
+- view, update, delete a contact's CPD record.
 
-# Add Print Page capability to reporting page
+ADD MULTI-YEAR CAPABILITY FOR LOGGING AND REPORTING
+- Change the $report_year variable to allow for a range of dates from current to past dates. [DONE]
+- Add jQuery for a date picker to change $_SESSION['report_year'] as required.	
 
-# Update UserDashBoard.tpl to use civiCRM regions
-	- http://wiki.civicrm.org/confluence/display/CRMDOC42/Region+Reference
-	- Do annotate the tpl files and file an issue / patch so civiCRM can commit the changes
+ADD PRINT-PAGE CAPABILITY TO REPORTING PAGE
+
+UPDATE UserDashBoard.tpl TO USE CIVICRM REGIONS
+- http://wiki.civicrm.org/confluence/display/CRMDOC42/Region+Reference
+- Do annotate the tpl files and file an issue / patch so civiCRM can commit the changes
 	
-# Review and refactor MV code between PHP pages and Smarty templates
+REVIEW AND REFACTOR MV CODE BETWEEN PHP MODELS AND SMARTY TEMPLATES
