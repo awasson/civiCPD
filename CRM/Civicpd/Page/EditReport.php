@@ -39,8 +39,10 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
 				
 				// Find the Year we are interested in
 				// Default to this year
-				$report_year = date("Y");
-				$this->assign('report_year', $report_year); 
+				if(!isset($_SESSION["report_year"])) {
+					$_SESSION["report_year"] = date("Y");
+				}
+				$this->assign('report_year', $_SESSION["report_year"]); 
 				
 				$today = date("Y-m-j");
 				$this->assign('today', $today);
@@ -202,7 +204,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    								ON civi_cpd_categories.id = civi_cpd_activities.category_id 
    								WHERE civi_cpd_activities.category_id = " . $category_id . " 
    								AND contact_id = " . $contact_id . " 
-   								AND EXTRACT(YEAR FROM credit_date) = " . $report_year . " 
+   								AND EXTRACT(YEAR FROM credit_date) = " . $_SESSION["report_year"] . " 
    								ORDER BY credit_date";   	
    								
    					$dao = CRM_Core_DAO::executeQuery($sql);
@@ -220,7 +222,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    					
    						//There's no activities here so we need to redirect the user to create some activities
    						
-   						$_SESSION['cpd_message'] = "You don't appear to have any CPD activities recorded for this category in " . $report_year . ". Please use the form below to record your CPD activities.";
+   						$_SESSION['cpd_message'] = "You don't appear to have any CPD activities recorded for this category in " . $_SESSION["report_year"] . ". Please use the form below to record your CPD activities.";
    						
    						$querystring = "/civicrm/civicpd/EditReport?action=new&catid=" . $category_id;
     					header("Location: $querystring");
@@ -278,7 +280,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    								ON civi_cpd_categories.id = civi_cpd_activities.category_id 
    								WHERE civi_cpd_activities.category_id = " . $category_id . " 
    								AND contact_id = " . $contact_id . " 
-   								AND EXTRACT(YEAR FROM credit_date) = " . $report_year . " 
+   								AND EXTRACT(YEAR FROM credit_date) = " . $_SESSION["report_year"] . " 
    								ORDER BY credit_date";   	
    								
    					$dao = CRM_Core_DAO::executeQuery($sql);
@@ -294,7 +296,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    					if ($dao->N <= 0) {
    					
    						//There's no activities here so we need to redirect the user to create some activities
-   						$_SESSION['cpd_message'] = "You don't appear to have any CPD activities recorded for this category in " . $report_year . ". Please use the form below to record your CPD activities.";
+   						$_SESSION['cpd_message'] = "You don't appear to have any CPD activities recorded for this category in " . $_SESSION["report_year"] . ". Please use the form below to record your CPD activities.";
    						
    						$querystring = "/civicrm/civicpd/EditReport?action=new&catid=" . $category_id;
     					header("Location: $querystring");

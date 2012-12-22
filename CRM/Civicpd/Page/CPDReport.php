@@ -29,10 +29,14 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
     $session = CRM_Core_Session::singleton();
 	$contact_id = $session->get('userID');
 	
+	
 	// Find the Year we are interested in and the date to print the report for
 	// Default to this year
-	$report_year = date("Y");
-	$this->assign('report_year', $report_year);
+	if(!isset($_SESSION["report_year"])) {
+		$_SESSION["report_year"] = date("Y");
+	}
+
+	$this->assign('report_year', $_SESSION["report_year"]);
 	
 	$today = date("D M j, Y");
 	$this->assign('today', $today);
@@ -76,9 +80,7 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
    					$activity		= mysql_real_escape_string($_POST['activity']);
    					$notes			= mysql_real_escape_string($_POST['notes']);
    					$sql = "UPDATE civi_cpd_activities SET credit_date = '".$credit_date."', credits = ".$credits.", activity = '".$activity."', notes = '".$notes."' WHERE id =" . $activity_id;
-   					CRM_Core_DAO::executeQuery($sql);
-   					print $sql;
-   					 
+   					CRM_Core_DAO::executeQuery($sql); 
    				}
    				break;
    				
@@ -136,7 +138,7 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
 		LEFT OUTER JOIN civi_cpd_activities
 		ON civi_cpd_activities.category_id = civi_cpd_categories.id
 		AND civi_cpd_activities.contact_id = " . $contact_id . "
-		AND EXTRACT(YEAR FROM civi_cpd_activities.credit_date) = " . $report_year . "
+		AND EXTRACT(YEAR FROM civi_cpd_activities.credit_date) = " . $_SESSION["report_year"] . "
 		GROUP BY civi_cpd_categories.id";
 		
     $dao = CRM_Core_DAO::executeQuery($sql);
@@ -168,7 +170,7 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
     $sql = "SELECT SUM(credits) as total_credits 
     		FROM civi_cpd_activities 
     		WHERE contact_id = ". $contact_id ." 
-    		AND EXTRACT(YEAR FROM civi_cpd_activities.credit_date) = " . $report_year;
+    		AND EXTRACT(YEAR FROM civi_cpd_activities.credit_date) = " . $_SESSION["report_year"];
     		
     $dao = CRM_Core_DAO::executeQuery($sql);
     
