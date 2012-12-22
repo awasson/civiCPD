@@ -1,4 +1,18 @@
 <?php
+/*
++--------------------------------------------------------------------+
+| CiviCDP version alpha 1.0                                          |
++--------------------------------------------------------------------+
+| File: CDPAdmin.php                                                 |
++--------------------------------------------------------------------+
+| This file is a part of the CiviCPD extension.                      |
+|                                                                    |
+| This file is the Administrators admin control panel and provides   |
+| a snapshot of the organization's CPD activities and credits        |
+| based on the year in question.                                     |
+|                                                                    |
++--------------------------------------------------------------------+
+*/
 
 require_once 'CRM/Core/Page.php';
 
