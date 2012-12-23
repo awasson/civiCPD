@@ -1,15 +1,18 @@
-# Andrew Wasson December 22, 2012
+# Andrew Wasson December 23, 2012
 
 ADD DELETE BUTTON FOR ACTIVITIES
 - Just a simple delete button to the editing page and then complete the code in CPDReport.php
 
 COMPLETE CONTACT RECORD TAB CODE
-- Specifically the URL attribute so that it opens a page where admin users can 
-- view, update, delete a contact's CPD record.
+- Specifically the URL attribute so that it opens a page where admin users can view, update, delete a contact's CPD record.
+
+ADD GLOBAL REPORTING FUNCTIONS FOR ADMINISTRATORS
+- Add button on Admin menu for producing a complete report in a table of all members and scores 
+- Add download of report in CSV
 
 ADD MULTI-YEAR CAPABILITY FOR LOGGING AND REPORTING
 - Change the $report_year variable to allow for a range of dates from current to past dates. [DONE]
-- Add jQuery for a date picker to change $_SESSION['report_year'] as required.	
+- Add jQuery for a date picker to change $_SESSION['report_year'] as required. [DONE]	
 
 ADD PRINT-PAGE CAPABILITY TO REPORTING PAGE
 
