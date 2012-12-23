@@ -29,15 +29,24 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
     $session = CRM_Core_Session::singleton();
 	$contact_id = $session->get('userID');
 	
-	
-	// Find the Year we are interested in and the date to print the report for
-	// Default to this year
+	// Find the Year we are interested in and the date to print the report for. Default to this year
+	$current_year = date("Y");
+		
 	if(!isset($_SESSION["report_year"])) {
-		$_SESSION["report_year"] = date("Y");
+		$_SESSION["report_year"] = $current_year;
 	}
-
+	
 	$this->assign('report_year', $_SESSION["report_year"]);
 	
+	// Build a drop-down for changing the report year session variable
+	$select_years = "";
+	for($i=$current_year; $i>=($current_year-15); $i--) {
+		$selected = "";
+		if($i == $_SESSION["report_year"]) { $selected = "selected"; }
+		$select_years .= '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
+	} 
+	$this->assign('select_years', $select_years);
+		
 	$today = date("D M j, Y");
 	$this->assign('today', $today);
 	 

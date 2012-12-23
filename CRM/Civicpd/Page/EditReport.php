@@ -44,7 +44,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
 				}
 				$this->assign('report_year', $_SESSION["report_year"]); 
 				
-				$today = date("Y-m-j");
+				$today = $_SESSION["report_year"] . date("-m-j");
 				$this->assign('today', $today);
 				// *** Set up some defaults *** //
 		
