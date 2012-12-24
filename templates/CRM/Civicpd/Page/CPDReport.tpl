@@ -48,6 +48,7 @@
 
 #report_year {
     display: inline-block;
+    margin-left: 5px;
     position: relative;
 }
 
@@ -69,26 +70,24 @@
     			jq('#report_year').text(reportyear);
     			jq('#report_year').fadeIn('slow');
   			}); 
-		
-			jq.post("/civicrm/civicpd/reportyear", 
-				{ new_year : reportyear }
-				, jq('.report-year').text(reportyear)
-				, window.setTimeout('location.reload()', 500)
+
+			jq.post("/civicrm/civicpd/reportyear?new_year=" + reportyear, 
+
+				jq('.report-year').text(reportyear), 
+				
+				function(data) {
+     				window.setTimeout('location.reload()', 0);
+  		 		}
+				
 			);
 				
 		});
-		
 		
 		jq('#report_year').click(function() {
 			jq(this).fadeOut('fast', function() {
     			jq('#select_year').fadeIn('slow');
   			});
    		});
-			
-			
-		jq('.close').click(function() {
-   			jq('.messagebox').fadeOut('fast');
-   		});	
    		
    		jq('#print_button').click(function() {
    			window.print();

@@ -1,25 +1,22 @@
 <?php
 
-	// This script is called via jQuery.post() and sets the session year variable 
-
 	require_once 'CRM/Core/Page.php';
-
-	if(isset($_REQUEST['new_year'])) {
+	
+	class CRM_Civicpd_Page_ReportYear extends CRM_Core_Page {	
+	  function run() {
+	  
+	  // This script is called via jQuery.post() and sets the session year variable 
+	  if(isset($_REQUEST['new_year'])) {
 		$new_year = $_REQUEST['new_year'];
-		$_SESSION["report_year"] = $new_year;
+		$_SESSION['report_year'] = $new_year;
 		$output = 1;
-	} else {
+	  } else {
 		$output = 0;
+	  }
+	
+	  $this->assign('output', $output);
+	
+	  parent::run();
+	
 	}
-
-?>
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Report Year Switcher</title>
-</head>
-<body>
-<?php print $output; ?>
-</body>
-</html>
+}

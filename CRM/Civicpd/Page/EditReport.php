@@ -282,8 +282,10 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
     		header('Location: /civicrm/civicpd/report');
     		exit;
     	}
-   
-   	$this->assign('cpd_message', $_SESSION['cpd_message']);
+   	
+   	if(isset($_SESSION['cpd_message'])) {
+   		$this->assign('cpd_message', $_SESSION['cpd_message']);
+   	}
    	
     parent::run();
   }
