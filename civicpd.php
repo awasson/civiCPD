@@ -75,7 +75,7 @@ function civicpd_civicrm_navigationMenu( &$params ) {
 function civicpd_civicrm_tabs( &$tabs, $contactID ) {
     // let's add a new tab... In the real world, you would create a url which would
     // return an html snippet etc.
-    $url = CRM_Utils_System::url('civicrm/civicpd/report');
+    $url = CRM_Utils_System::url( 'civicrm/civicpd/report', "reset=1&snippet=2");
     $tabs[] = array( 'id'    => 'CDP Activities',
                      'url'   => $url,
                      'title' => 'CDP Activities',
