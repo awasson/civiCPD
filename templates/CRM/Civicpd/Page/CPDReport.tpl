@@ -33,7 +33,7 @@
       <td nowrap="" height="18">&nbsp;</td>
     </tr>
     <tr valign="top">
-      <td nowrap="" height="18">| <a title="Click here to print this page" href="#">Print this page</a> |</td>
+      <td nowrap="" height="18">| <a title="Click here to print this page" href="#" id="print_button">Print this page</a> |</td>
     </tr>
   </tbody>
 </table>
@@ -85,19 +85,21 @@ for this report:
 <!-- 
 	var jq = jQuery.noConflict();
 	
-	jq('#select_year').change(function() {
-		var reportyear = jq(this).attr('value');
-		
-		jq.post("/civicrm/civicpd/reportyear", 
-			{ new_year: reportyear }, 
-			jq('.report-year').text(reportyear), 
-			jq('.messagebox').fadeOut('fast'), 
-			window.setTimeout('location.reload()', 500)
-		);
-				
-	});
-
 	jQuery(function(){
+	
+	
+		jq('#select_year').change(function() {
+			var reportyear = jq(this).attr('value');
+		
+			jq.post("/civicrm/civicpd/reportyear", 
+				{ new_year: reportyear }, 
+				jq('.report-year').text(reportyear), 
+				jq('.messagebox').fadeOut('fast'), 
+				window.setTimeout('location.reload()', 500)
+			);
+				
+		});
+		
 		
 		jq('.report-year').click(function(e) {
 			jq('.messagebox').css("top", "0px");
@@ -108,6 +110,10 @@ for this report:
 			
 		jq('.close').click(function() {
    			jq('.messagebox').fadeOut('fast');
+   		});	
+   		
+   		jq('#print_button').click(function() {
+   			window.print();
    		});	
 			
 	});

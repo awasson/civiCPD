@@ -97,12 +97,10 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
 				$_SESSION['cpd_message'] = '';
 					
    				// Delete Category where id = $catid
-   				if(isset($_GET['activity_id'])){
-   					$catid = $_GET['activity_id'];
+   				if(isset($_GET['id'])){
+   					$activity_id = $_GET['id'];
    					$sql = "DELETE FROM civi_cpd_activities WHERE id =" . $activity_id;
-   					// CRM_Core_DAO::executeQuery($sql);
-   					print $sql;
-   					
+   					CRM_Core_DAO::executeQuery($sql);
    				}
    				break;
    				

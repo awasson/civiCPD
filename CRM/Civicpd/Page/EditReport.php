@@ -170,8 +170,14 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
         										<td width="60%"><textarea class="frm" rows="4" cols="42" name="notes">' . $notes . '</textarea></td>
       										</tr>
       										<tr>
-        										<td align="center"><input type="submit" value="Submit" class="form-submit-inline" name="Submit"></td>
-        										<td></td>
+        										<td colspan="2">
+        											<input type="submit" value="Submit" class="form-submit-inline" name="Submit">
+        											<div style="display: inline-block; margin-bottom: -19px; margin-top: 20px;">
+														<a title="Delete Activity" class="delete button" href="/civicrm/civicpd/report?action=delete&amp;id=' . $activity_id . '">
+                										<span><div class="icon delete-icon"></div>Delete Activity</span>
+                										</a>
+                									</div>
+        										</td>
       										</tr>
     									</tbody>
   									</table>
@@ -338,13 +344,13 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
 				}
 			
 			} else {
-					//WE DON'T HAVE A REASON TO BE HERE AND SHOULD REDIRECT TO THE CATEGORIES PAGE
+					// WE DON'T HAVE A REASON TO BE HERE AND SHOULD REDIRECT TO THE CATEGORIES PAGE
     				header('Location: /civicrm/civicpd/report');
     				exit;
     		}
 		
 		} else {
-			//WE DON'T HAVE A REASON TO BE HERE AND SHOULD REDIRECT TO THE CATEGORIES PAGE
+			// WE DON'T HAVE A REASON TO BE HERE AND SHOULD REDIRECT TO THE CATEGORIES PAGE
     		header('Location: /civicrm/civicpd/report');
     		exit;
     	}

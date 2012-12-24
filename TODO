@@ -1,7 +1,8 @@
 # Andrew Wasson December 23, 2012
 
 ADD DELETE BUTTON FOR ACTIVITIES
-- Just a simple delete button to the editing page and then complete the code in CPDReport.php
+- Just a simple delete button to the editing page and then complete the code in CPDReport.php [DONE]
+- Add a Javascript utility so that users have to confirm that they want to delete an Activity before running the delete query.
 
 COMPLETE CONTACT RECORD TAB CODE
 - Specifically the URL attribute so that it opens a page where admin users can view, update, delete a contact's CPD record.
@@ -15,6 +16,8 @@ ADD MULTI-YEAR CAPABILITY FOR LOGGING AND REPORTING
 - Add jQuery for a date picker to change $_SESSION['report_year'] as required. [DONE]	
 
 ADD PRINT-PAGE CAPABILITY TO REPORTING PAGE
+- Add Javascript print() [DONE]
+- Add CSS for Printing
 
 UPDATE UserDashBoard.tpl TO USE CIVICRM REGIONS
 - http://wiki.civicrm.org/confluence/display/CRMDOC42/Region+Reference
