@@ -161,7 +161,7 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
     			.  '</tr>'
     			.  '<tr valign="top">'
       			.  '<td><!-- put in buttons for add edit view -->'
-        		.  '<a href="/civicrm/civicpd/EditReport?action=new&amp;catid=' . $dao->id . '">New</a> | <a href="/civicrm/civicpd/EditReport?action=update&amp;catid=' . $dao->id . '">Update</a> | <a href="/civicrm/civicpd/EditReport?action=view&amp;catid=' . $dao->id . '">View</a>'
+        		.  '<a href="/civicrm/civicpd/EditReport?action=new&amp;catid=' . $dao->id . '">New</a> | <a href="/civicrm/civicpd/EditReport?action=update&amp;catid=' . $dao->id . '">View</a>'
       			.  '</td>'      
     			.  '</tr>'
     			.  '<tr valign="top">'

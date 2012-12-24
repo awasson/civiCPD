@@ -2,7 +2,7 @@
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
   <tbody>
   	<tr valign="top">
-      <th nowrap="">Continuing Professional Development Activities for: <a href="#" title="Choose a different year" style="font-weight:normal;" class="report-year">{$report_year}</a></th>
+      <th nowrap="">Continuing Professional Development Activities for: <a href="#" title="Choose a different year" style="font-weight:normal;" id="report_year">{$report_year}</a> <select class="cpd-frm" name="select_year" id="select_year">{$select_years}</select></th>
     </tr>
     <tr valign="top">
       <td>&nbsp;</td>
@@ -38,46 +38,20 @@
   </tbody>
 </table>
 
-<div class="messagebox">
-<p>Choose a different year<br/> 
-for this report: 
-<select class="cpd-frm" name="select_year" id="select_year">
-{$select_years}
-</select>
-</p>
-<a class="close" href="#" title="Close">Close</a>
-</div>
-
-
 {literal}
 
 <style type="text/css">
 
-.report-year {
+#select_year {
+	display: none;
+}
+
+#report_year {
     display: inline-block;
     position: relative;
 }
 
-.messagebox {
-    background-color: #FFFFFF;
-    border: 3px ridge #0779BF;
-    display: none;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 0.9em;
-    padding: 25px 20px 15px 20px;
-    position: absolute;
-}
 
-.messagebox .close {
-    border-bottom: 1px solid #B19953;
-    border-left: 1px solid #B19953;
-    font-size: 0.9em;
-    padding-left: 3px;
-    padding-right: 3px;
-    position: absolute;
-    right: 0;
-    top: 0;
-}
 
 </style>
 
@@ -90,21 +64,25 @@ for this report:
 	
 		jq('#select_year').change(function() {
 			var reportyear = jq(this).attr('value');
+			
+			jq(this).fadeOut('fast', function() {
+    			jq('#report_year').text(reportyear);
+    			jq('#report_year').fadeIn('slow');
+  			}); 
 		
 			jq.post("/civicrm/civicpd/reportyear", 
-				{ new_year: reportyear }, 
-				jq('.report-year').text(reportyear), 
-				jq('.messagebox').fadeOut('fast'), 
-				window.setTimeout('location.reload()', 500)
+				{ new_year : reportyear }
+				, jq('.report-year').text(reportyear)
+				, window.setTimeout('location.reload()', 500)
 			);
 				
 		});
 		
 		
-		jq('.report-year').click(function(e) {
-			jq('.messagebox').css("top", "0px");
-			jq('.messagebox').css("left", "350px");
-   			jq('.messagebox').fadeIn('slow');
+		jq('#report_year').click(function() {
+			jq(this).fadeOut('fast', function() {
+    			jq('#select_year').fadeIn('slow');
+  			});
    		});
 			
 			
