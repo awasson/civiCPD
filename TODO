@@ -1,8 +1,13 @@
-# Andrew Wasson December 23, 2012
+# Andrew Wasson December 26, 2012
 
-ADD DELETE BUTTON FOR ACTIVITIES
+ADD DELETE BUTTON FOR CATEGORIES
 - Just a simple delete button to the editing page and then complete the code in CPDReport.php [DONE]
-- Add a Javascript utility so that users have to confirm that they want to delete an Activity before running the delete query.
+- Add a Javascript utility so that users have to confirm that they want to delete an Activity before running the delete query [DONE]
+- InnoDB CREATE TABLE Query to link Category Index with Activities table so that only empty categories can be deleted.
+
+ADD DELETE BUTTON FOR ACTIVITIES [DONE]
+- Just a simple delete button to the editing page and then complete the code in CPDReport.php [DONE]
+- Add a Javascript utility so that users have to confirm that they want to delete an Activity before running the delete query [DONE]
 
 COMPLETE CONTACT RECORD TAB CODE
 - Specifically the URL attribute so that it opens a page where admin users can view, update, delete a contact's CPD record.
@@ -11,13 +16,14 @@ ADD GLOBAL REPORTING FUNCTIONS FOR ADMINISTRATORS
 - Add button on Admin menu for producing a complete report in a table of all members and scores 
 - Add download of report in CSV
 
-ADD MULTI-YEAR CAPABILITY FOR LOGGING AND REPORTING
+ADD MULTI-YEAR CAPABILITY FOR LOGGING AND REPORTING [DONE]
 - Change the $report_year variable to allow for a range of dates from current to past dates. [DONE]
 - Add jQuery for a date picker to change $_SESSION['report_year'] as required. [DONE]	
 
-ADD PRINT-PAGE CAPABILITY TO REPORTING PAGE
+ADD PRINT-PAGE CAPABILITY TO REPORTING PAGE [DONE]
 - Add Javascript print() [DONE]
-- Add CSS for Printing
+
+
 
 UPDATE UserDashBoard.tpl TO USE CIVICRM REGIONS
 - http://wiki.civicrm.org/confluence/display/CRMDOC42/Region+Reference

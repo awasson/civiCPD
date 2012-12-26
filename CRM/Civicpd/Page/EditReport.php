@@ -173,7 +173,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
         										<td colspan="2">
         											<input type="submit" value="Submit" class="form-submit-inline" name="Submit">
         											<div style="display: inline-block; margin-bottom: -19px; margin-top: 20px;">
-														<a title="Delete Activity" class="delete button" href="/civicrm/civicpd/report?action=delete&amp;id=' . $activity_id . '">
+														<a title="Delete Activity" class="delete button" href="#">
                 										<span><div class="icon delete-icon"></div>Delete Activity</span>
                 										</a>
                 									</div>
@@ -186,6 +186,8 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
 					$this->assign("sub_title", "Use the form below to update this CPD <em>" . $category . "</em> activity"); 
 					
 					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/report?clear=1\';" />'); 
+					
+					$this->assign('delete_url', '/civicrm/civicpd/report?action=delete&id=' . $activity_id);
 					
 					$this->assign('output', $output);
 					
@@ -258,7 +260,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    					$this->assign("sub_title", "Update your CPD <em>" . $category . "</em> activities"); 
    					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/report\';" />'); 
    					$this->assign('new_button', '<div style="display: inline-block; margin-bottom: -19px; margin-top: 20px;">
-												<a title="New ' . $category . ' Activity" class="delete button" href="/civicrm/civicpd/EditReport?action=new&catid=' . $category_id . '">
+												<a title="New ' . $category . ' Activity" class="button" href="/civicrm/civicpd/EditReport?action=new&catid=' . $category_id . '">
                 									<span><div class="icon dropdown-icon"></div>New ' . $category . ' Activity</span>
                 								</a>
                 							</div>');

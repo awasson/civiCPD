@@ -29,3 +29,36 @@
     </tr>
   </table>
 </form>
+{literal}
+<script type="text/javascript">
+<!-- 
+
+	var jq = jQuery.noConflict();
+
+	jq('.delete.button').click(function(){	
+    	
+    	jq('<div></div>').appendTo('body')
+        	.html('<div><p>Once a category has been removed it cannot be restored<br/> Please confirm this deletion.</p></div>')
+        	.dialog({
+                modal: true, title: 'Confirm Delete', zIndex: 10000, autoOpen: true,
+                width: 'auto', resizable: false,
+                buttons: {
+                    Yes: function () {
+                    	jq(this).dialog("close");
+                    	top.location = "{/literal}{$delete_url}{literal}";
+                    },
+                    No: function () {
+                    	jq(this).dialog("close");
+                    	
+                    }
+                },
+                close: function (event, ui) {
+                    jq(this).remove();
+                }
+        });
+        return false;
+    });
+//-->
+</script>
+
+{/literal}

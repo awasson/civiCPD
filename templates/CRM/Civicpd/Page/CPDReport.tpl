@@ -70,17 +70,19 @@
     			jq('#report_year').text(reportyear);
     			jq('#report_year').fadeIn('slow');
   			}); 
-
-			jq.post("/civicrm/civicpd/reportyear?new_year=" + reportyear, 
-
-				jq('.report-year').text(reportyear), 
-				
-				function(data) {
-     				window.setTimeout('location.reload()', 0);
-  		 		}
-				
-			);
-				
+  			
+  			jq.ajax({
+  				type: 'POST',
+  				url: '/civicrm/civicpd/reportyear',
+  				data: { new_year : reportyear },
+  				success: function(data){
+    				window.setTimeout('location.reload()', 0);
+  				},
+  				error: function(){
+    				alert('failure');
+  				}
+			});
+			
 		});
 		
 		jq('#report_year').click(function() {

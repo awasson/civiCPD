@@ -38,10 +38,12 @@ class CRM_Civicpd_Page_Edit extends CRM_Core_Page {
 			$this->assign('minimum', $dao->minimum);
 			$this->assign('maximum', $dao->maximum);
 			
+			
+			$this->assign('delete_url', '/civicrm/civicpd/categories?action=delete&id='.$catid);
 			$this->assign('submit_button', '<input type="submit" name="submit" id="submit" value="Update" class="form-submit-inline" />');
 			$this->assign('cancel_button', '<input type="button" name="cancel" id="cancel" value="Cancel" onclick="history.back(1);" />');
 			$this->assign('delete_button', '<div style="display: inline-block; margin-bottom: -19px; margin-top: 20px;">
-												<a title="Delete Category" class="delete button" href="/civicrm/civicpd/categories?action=delete&amp;id='.$catid.'">
+												<a title="Delete Category" class="delete button" href="#">
                 									<span><div class="icon delete-icon"></div>Delete Category</span>
                 								</a>
                 							</div>');
