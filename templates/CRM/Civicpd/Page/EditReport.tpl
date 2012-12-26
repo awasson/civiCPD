@@ -7,6 +7,16 @@
 
 
 {literal}
+<style type="text/css">
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-content, .ui-widget-header {
+    color: #3E3E3E;
+    font-family: helvetica;
+    font-size: 0.95em;
+}
+
+</style>
+
 <script type="text/javascript">
 <!-- 
 
