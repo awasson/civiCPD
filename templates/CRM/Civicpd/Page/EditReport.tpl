@@ -36,9 +36,9 @@
     jq('.delete.button').click(function(){	
     	
     	jq('<div></div>').appendTo('body')
-        	.html('<div><p>Once an entry has been removed it cannot be restored<br/> Please confirm this deletion.</p></div>')
+        	.html('<div><p>Once an activity has been removed, it cannot be restored<br/>without manually re-entering it. Please confirm this deletion.</p></div>')
         	.dialog({
-                modal: true, title: 'Confirm Delete', zIndex: 10000, autoOpen: true,
+                modal: true, title: 'DELETE CONFIRMATION', zIndex: 10000, autoOpen: true,
                 width: 'auto', resizable: false,
                 buttons: {
                     Yes: function () {
