@@ -13,7 +13,8 @@ COMPLETE CONTACT RECORD TAB CODE
 - Specifically the URL attribute so that it opens a page where admin users can view, update, delete a contact's CPD record.
 
 ADD GLOBAL REPORTING FUNCTIONS FOR ADMINISTRATORS
-- Add button on Admin menu for producing a complete report in a table of all members and scores 
+- Add button on Admin menu for producing a complete report in a table of all members and scores [DONE]
+- Format the 'Full Report' page 
 - Add download of report in CSV
 
 ADD MULTI-YEAR CAPABILITY FOR LOGGING AND REPORTING [DONE]
