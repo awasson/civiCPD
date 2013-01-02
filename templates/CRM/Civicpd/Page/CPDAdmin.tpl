@@ -10,4 +10,4 @@
 	<li>Change the year</li>
 </ul>
 
-<p>Contacts will be able to access and update their CPD reporting pages from the Contact Dashboard</p>
+<p>Members will be able to access and update their CPD reporting pages from their Contact Dashboard</p>

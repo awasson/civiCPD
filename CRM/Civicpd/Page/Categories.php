@@ -84,10 +84,10 @@ class CRM_Civicpd_Page_Categories extends CRM_Core_Page {
   	
   	// Remove and replace with a simple pass of $dao to view. ie: $this->assign('categories', $dao);
   	
-  	$mytmp = "";
+  	$categories = "";
   	
     while( $dao->fetch( ) ) {        
-        $mytmp .= "<tr>"
+        $categories .= "<tr>"
         		. "<td nowrap=nowrap><strong>" . $dao->category . "</strong></td>" 
         		. "<td><em>" . $dao->description . "</em></td>"  
         		. "<td style='text-align: center;'>" . $dao->minimum . "</td>"  
@@ -96,7 +96,7 @@ class CRM_Civicpd_Page_Categories extends CRM_Core_Page {
         		. "</tr>";
      }
 
-	$this->assign('categories', $mytmp);
+	$this->assign('categories', $categories);
 
     parent::run();
   }

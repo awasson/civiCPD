@@ -36,4 +36,10 @@
     <title>ReportYear</title>
     <access_arguments>access CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/civicpd/fullreport</path>
+    <page_callback>CRM_Civicpd_Page_FullReport</page_callback>
+    <title>FullReport</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

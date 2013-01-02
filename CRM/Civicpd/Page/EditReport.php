@@ -98,7 +98,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
 					
 					$this->assign("sub_title", "Use the form below to insert a new CPD <em>" . $category . "</em> activity"); 
 					
-					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/report?clear=1\';" />'); 
+					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/report?clear\';" />'); 
 					
 					$this->assign('output', $output);
 					
@@ -185,7 +185,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
 					
 					$this->assign("sub_title", "Use the form below to update this CPD <em>" . $category . "</em> activity"); 
 					
-					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/report?clear=1\';" />'); 
+					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/report?clear\';" />'); 
 					
 					$this->assign('delete_url', '/civicrm/civicpd/report?action=delete&id=' . $activity_id);
 					

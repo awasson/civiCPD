@@ -79,7 +79,7 @@
     				window.setTimeout('location.reload()', 0);
   				},
   				error: function(){
-    				alert('failure');
+    				alert('There was a problem changing the year. \nPlease refresh the page and try again.');
   				}
 			});
 			

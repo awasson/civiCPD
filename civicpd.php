@@ -52,7 +52,20 @@ function civicpd_civicrm_navigationMenu( &$params ) {
                     'active'     => 1
                 ),
 			),
-            '2' => array (
+			'2' => array (
+                'attributes' => array (
+                    'label'      => 'Report (Annual)',
+                    'name'       => 'Report',
+                    'url'        => 'civicrm/civicpd/fullreport',
+                    'permission' => 'administer CiviCRM',
+                    'operator'   => null,
+                    'separator'  => 1,
+                    'parentID'   => $maxKey+1,
+                    'navID'      => 1,
+                    'active'     => 1
+                ),
+            ),
+            '3' => array (
                 'attributes' => array (
                     'label'      => 'Categories',
                     'name'       => 'Categories',
@@ -85,8 +98,10 @@ function civicpd_civicrm_tabs( &$tabs, $contactID ) {
 function civicpd_civicrm_pageRun( &$page ) {
     // Assign variables to the template using: $page->assign( 'varName', $varValue );
     // Get variables using: $page->getVar( 'varName' );
-    
+
     if($page->getVar('_name')=='CRM_Contact_Page_View_UserDashBoard') {
+    
+    	
     
     	// Find the ID of the person viewing this page
     	$session = CRM_Core_Session::singleton();
@@ -101,9 +116,9 @@ function civicpd_civicrm_pageRun( &$page ) {
 
     	$dao = CRM_Core_DAO::executeQuery($sql);
     	while( $dao->fetch( ) ) {   
-        	$total_credits = abs($dao->total_credits);
+        	$total_credits = abs($dao->total_credits);	
     	}
-   
+    	
     	if(!isset($total_credits)) {
         	$total_credits = 0;
     	}
