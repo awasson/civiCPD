@@ -1,1 +1,1 @@
-{$output}
+<div>{$output}

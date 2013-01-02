@@ -2,7 +2,8 @@
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
   <tbody>
   	<tr valign="top">
-      <th nowrap="">Continuing Professional Development Activities for: <a href="#" title="Choose a different year" style="font-weight:normal;" id="report_year">{$report_year}</a> <select class="cpd-frm" name="select_year" id="select_year">{$select_years}</select></th>
+      <th nowrap="">Continuing Professional Development Activities for: <a href="#" title="Click to choose a different year" style="font-weight:normal;" id="report_year">{$smarty.session.report_year}</a> <select class="cpd-frm" name="select_year" id="select_year">{$select_years}</select>
+      <p class="cpd-message">This report is for the year {$smarty.session.report_year}. To choose another year for this report, click on the year link above.</p></th>
     </tr>
     <tr valign="top">
       <td>&nbsp;</td>
@@ -12,7 +13,7 @@
     <!-- End Looping Results -->
     <tr valign="top">
       <td height="18" colspan="7">CDP credits for activities undertaken 
-        in the calendar year {$report_year}: <strong>{$total_credits}</strong></td>
+        in the calendar year {$smarty.session.report_year}: <strong>{$total_credits}</strong></td>
     </tr>
     <tr valign="top">
       <td nowrap="" height="18">
@@ -52,6 +53,11 @@
     position: relative;
 }
 
+p.cpd-message {
+    font-style: italic;
+    font-weight: normal;
+}
+
 
 
 </style>
@@ -73,7 +79,7 @@
   			
   			jq.ajax({
   				type: 'POST',
-  				url: '/civicrm/civicpd/reportyear',
+  				url: '/civicrm/civicpd/reportyear?reset=1&snippet=2',
   				data: { new_year : reportyear },
   				success: function(data){
     				window.setTimeout('location.reload()', 0);

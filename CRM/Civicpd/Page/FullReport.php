@@ -21,11 +21,21 @@ require_once 'CRM/Core/Page.php';
 class CRM_Civicpd_Page_FullReport extends CRM_Core_Page {
   function run() {
   
+  	// Add Variables for date
   	$current_year = date("Y");
 		
 	if(!isset($_SESSION["report_year"])) {
 		$_SESSION["report_year"] = $current_year;
 	}
+	
+	// Build a drop-down for changing the report year session variable
+	$select_years = "";
+	for($i=$current_year; $i>=($current_year-15); $i--) {
+		$selected = "";
+		if($i == $_SESSION["report_year"]) { $selected = "selected"; }
+		$select_years .= '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
+	} 
+	$this->assign('select_years', $select_years);
   
     // Set the page-title
     CRM_Utils_System::setTitle(ts('Review CPD Full Report'));
@@ -44,7 +54,7 @@ class CRM_Civicpd_Page_FullReport extends CRM_Core_Page {
     }
     
     // Set up table header for full report
-    $report_table = '<table id="report_table" border="1" cellspacing="5" cellpadding="5">
+    $report_table = '<table class="report-table" border="0" cellspacing="0" cellpadding="0">
     					<tr>
     						<th nowrap>Last Name</th>
     						<th nowrap>First Name</th>

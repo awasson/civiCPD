@@ -36,8 +36,6 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
 		$_SESSION["report_year"] = $current_year;
 	}
 	
-	$this->assign('report_year', $_SESSION["report_year"]);
-	
 	// Build a drop-down for changing the report year session variable
 	$select_years = "";
 	for($i=$current_year; $i>=($current_year-15); $i--) {
