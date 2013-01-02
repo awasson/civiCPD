@@ -101,7 +101,11 @@ function civicpd_civicrm_pageRun( &$page ) {
 
     if($page->getVar('_name')=='CRM_Contact_Page_View_UserDashBoard') {
     
-    	
+    	$current_year = date("Y");
+		
+		if(!isset($_SESSION["report_year"])) {
+			$_SESSION["report_year"] = $current_year;
+		}
     
     	// Find the ID of the person viewing this page
     	$session = CRM_Core_Session::singleton();
@@ -112,7 +116,7 @@ function civicpd_civicrm_pageRun( &$page ) {
     	$report_year = date("Y");
 
     	// Total credits for the year
-    	$sql = "SELECT SUM(credits) as total_credits FROM civi_cpd_activities WHERE contact_id = ". $contact_id ." AND EXTRACT(YEAR FROM civi_cpd_activities.credit_date) = " . $report_year;
+    	$sql = "SELECT SUM(credits) as total_credits FROM civi_cpd_activities WHERE contact_id = ". $contact_id ." AND EXTRACT(YEAR FROM civi_cpd_activities.credit_date) = " . $_SESSION["report_year"];
 
     	$dao = CRM_Core_DAO::executeQuery($sql);
     	while( $dao->fetch( ) ) {   
@@ -123,7 +127,7 @@ function civicpd_civicrm_pageRun( &$page ) {
         	$total_credits = 0;
     	}
 	
-		$mcd_cpd_message = 'You currently have <strong>'. $total_credits .'</strong> CPD credits for this year. <a href="/civicrm/civicpd/report"><u>Click here</u></a> to update your CPD activities.';
+		$mcd_cpd_message = 'You currently have <strong>'. $total_credits .'</strong> CPD credits for ' . $_SESSION["report_year"] . '. <a href="/civicrm/civicpd/report"><u>Click here</u></a> to update your CPD activities.';
 	
     	$page->assign( 'mcd_cpd_message', $mcd_cpd_message );
     
