@@ -3,7 +3,7 @@
   <tbody>
   	<tr valign="top">
       <th nowrap="">Continuing Professional Development Activities for: <a href="#" title="Click to choose a different year" style="font-weight:normal;" id="report_year">{$smarty.session.report_year}</a> <select class="cpd-frm" name="select_year" id="select_year">{$select_years}</select>
-      <p class="cpd-message">This report is for the year {$smarty.session.report_year}. To choose another year for this report, click on the year link above.</p></th>
+      <p class="cpd-message">This report is for the year {$smarty.session.report_year}. To choose another year to report, click on the year above.</p></th>
     </tr>
     <tr valign="top">
       <td>&nbsp;</td>

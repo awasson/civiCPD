@@ -1,7 +1,9 @@
 <h3>Continuing Professional Development Activities for: <a href="#" title="Click to choose a different year" id="report_year">{$smarty.session.report_year}</a> <select class="cpd-frm" name="select_year" id="select_year">{$select_years}</select></h3>
-<p>This report is for the year {$smarty.session.report_year}. To choose another year for this report, click on the year in the sub-title above.</p>
+<p>This report is for the year {$smarty.session.report_year}. To choose another year to report, click on the year in the sub-title above.</p>
 
 {$report_table}
+
+
 {literal}
 
 <style type="text/css">
@@ -18,7 +20,12 @@
     width: 100%;
 }
 
-#crm-container table.report-table th, 
+#crm-container table.report-table th {
+    background-color: #EFEFEF;
+    border: 1px solid #CCCCCC;
+    color: #666666;
+}
+ 
 #crm-container table.report-table td {
     border: 1px solid #EFEFEF;
 }

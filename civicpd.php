@@ -54,7 +54,7 @@ function civicpd_civicrm_navigationMenu( &$params ) {
 			),
 			'2' => array (
                 'attributes' => array (
-                    'label'      => 'Report (Annual)',
+                    'label'      => 'Report (Yearly)',
                     'name'       => 'Report',
                     'url'        => 'civicrm/civicpd/fullreport',
                     'permission' => 'administer CiviCRM',
