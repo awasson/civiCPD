@@ -1,9 +1,9 @@
-<h3>Administration page in development...</h3>
-<p>This page sets the defaults for Continued Professional development. </p>
+<h3>Continuing Professional Development Administration</h3>
+<p>This page is currently a mockup and will not affect the system. It will eventually set the defaults for the Continued Professional development system. </p>
 
 
 
-<form>
+<form method="post">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td colspan="2"><strong>Membership types subject to CPD activities:</strong></td>
