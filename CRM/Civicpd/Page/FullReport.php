@@ -93,7 +93,8 @@ class CRM_Civicpd_Page_FullReport extends CRM_Core_Page {
     }
     
     for($x =0; $x < count($arr_members); $x++ ) {
-		if(!is_null($arr_members[$x]["last_name"]) && !is_null($arr_members[$x]["first_name"]) && !is_null($arr_members[$x]["external_identifier"])) {    	
+    	// Make sure the record isn't blank
+		if(!is_null($arr_members[$x]["last_name"]) || !is_null($arr_members[$x]["first_name"])) {    	
     		$report_table .= '<tr>';
     		$report_table .= '<td>' . $arr_members[$x]["last_name"] . '</td>';
     		$report_table .= '<td>' . $arr_members[$x]["first_name"] . '</td>';
