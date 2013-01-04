@@ -1,4 +1,6 @@
-# Andrew Wasson January 2, 2013
+# Andrew Wasson January 4, 2013
+
+** PRIORITIES **
 
 ADD CPD ADMINISTRATION TOOLS
 - Add DB table for default vocabulary
@@ -7,37 +9,55 @@ ADD CPD ADMINISTRATION TOOLS
 - Add code to tie the Member types to the full report page
 - Add code to tie member dashboard to CPD based on member type if selected on CPD Administration page
 
-ADD DELETE BUTTON FOR CATEGORIES
-- Just a simple delete button to the editing page and then complete the code in CPDReport.php [DONE]
-- Add a Javascript utility so that users have to confirm that they want to delete an Activity before running the delete query [DONE]
-- InnoDB CREATE TABLE Query to link Category Index with Activities table so that only empty categories can be deleted.
-
-ADD DELETE BUTTON FOR ACTIVITIES [DONE]
-- Just a simple delete button to the editing page and then complete the code in CPDReport.php [DONE]
-- Add a Javascript utility so that users have to confirm that they want to delete an Activity before running the delete query [DONE]
-
-COMPLETE CONTACT RECORD TAB CODE
-- Specifically the URL attribute so that it opens a page where admin users can view, update, delete a contact's CPD record.
-
 ADD GLOBAL REPORTING FUNCTIONS FOR ADMINISTRATORS
-- Add button on Admin menu for producing a complete report in a table of all members and scores [DONE]
-- Format the 'Full Report' page [DONE]
-- Add edit links to report to provide editing of any member by administration
+- [DONE] Add button on Admin menu for producing a complete report in a table of all members and scores 
+- [DONE] Format the 'Full Report' page 
+- Add database join to include member type and member since to full report 
+- Add edit links to full report to provide editing of any member's activities by administration
 - Add download of report in CSV
 
-ADD MULTI-YEAR CAPABILITY FOR LOGGING AND REPORTING [DONE]
-- Change the $report_year variable to allow for a range of dates from current to past dates. [DONE]
-- Add jQuery for a date picker to change $_SESSION['report_year'] as required. [DONE]	
-
-ADD PRINT-PAGE CAPABILITY TO REPORTING PAGE [DONE]
-- Add Javascript print() [DONE]
+ADD DELETE BUTTON FOR CATEGORIES
+- [DONE] A delete button to the editing page and then complete the code in CPDReport.php 
+- [DONE] Add a Javascript utility so that users have to confirm that they want to delete an Activity before running the delete query 
+- InnoDB CREATE TABLE Query to link Category Index with Activities table so that only empty categories can be deleted.
 
 
+
+
+** SECONDARY PRIORITIES **
+
+REVIEW AND REFACTOR MV CODE BETWEEN PHP MODELS AND SMARTY TEMPLATES
 
 UPDATE UserDashBoard.tpl TO USE CIVICRM REGIONS
 - http://wiki.civicrm.org/confluence/display/CRMDOC42/Region+Reference
 - Do annotate the tpl files and file an issue / patch so civiCRM can commit the changes
 	
-REVIEW AND REFACTOR MV CODE BETWEEN PHP MODELS AND SMARTY TEMPLATES
+
+
+
+** MIGHT ADD LATER IF THERE IS A BENEFIT **
+
+COMPLETE CONTACT RECORD TAB CODE
+- Specifically the URL attribute so that it opens a page where admin users can view, update, delete a contact's CPD record.
+
+
+
+
+** COMPLETED **
+
+ADD DELETE BUTTON FOR ACTIVITIES [DONE]
+- [DONE] Just a simple delete button to the editing page and then complete the code in CPDReport.php 
+- [DONE] Add a Javascript utility so that users have to confirm that they want to delete an Activity before running the delete query 
+
+ADD MULTI-YEAR CAPABILITY FOR LOGGING AND REPORTING [DONE]
+- [DONE] Change the $report_year variable to allow for a range of dates from current to past dates. 
+- [DONE] Add jQuery for a date picker to change $_SESSION['report_year'] as required. 	
+
+ADD PRINT-PAGE CAPABILITY TO REPORTING PAGE [DONE] 
+- [DONE] Add Javascript print() 
+
+
+
+
 
 
