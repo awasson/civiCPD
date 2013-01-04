@@ -1,3 +1,11 @@
+CREATE  TABLE IF NOT EXISTS civi_cpd_defaults (
+  id INT NULL AUTO_INCREMENT ,
+  name VARCHAR(45) NOT NULL ,
+  value VARCHAR(255) NOT NULL ,
+  PRIMARY KEY (id) )
+ENGINE = InnoDB;
+
+
 CREATE  TABLE IF NOT EXISTS civi_cpd_categories (
   id INT NULL AUTO_INCREMENT ,
   category VARCHAR(45) NOT NULL ,
@@ -6,8 +14,6 @@ CREATE  TABLE IF NOT EXISTS civi_cpd_categories (
   maximum DECIMAL(6,2) NULL ,
   PRIMARY KEY (id) )
 ENGINE = InnoDB;
-
-
 
 
 CREATE  TABLE IF NOT EXISTS civi_cpd_activities (

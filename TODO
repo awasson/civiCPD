@@ -39,3 +39,5 @@ UPDATE UserDashBoard.tpl TO USE CIVICRM REGIONS
 - Do annotate the tpl files and file an issue / patch so civiCRM can commit the changes
 	
 REVIEW AND REFACTOR MV CODE BETWEEN PHP MODELS AND SMARTY TEMPLATES
+
+

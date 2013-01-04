@@ -6,7 +6,7 @@
 <form>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td colspan="2"><strong>Membership types that report CPD activities:</strong></td>
+    <td colspan="2"><strong>Membership types subject to CPD activities:</strong></td>
   </tr>
   <tr>
     <td colspan="2">{$membership_checkboxes}</td>
@@ -16,15 +16,39 @@
     <td>&nbsp;</td>
   </tr>
   <tr>
+    <td colspan="2"><strong>Members can edit/update activities within:</strong></td>
+  </tr>
+  <tr>
+    <td>{$member_edit_limit}</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong>Your organization's internal membership number:</strong><br/>
+    Most organizations have an alphanumeric membership number attached to a members contact record. 
+    By default the CPD module uses the <i>'external_identifier'</i> however the <i>'user_unique_id'</i> can be used instead.</td>
+  </tr>
+  <tr>
+    <td nowrap><label for="organization_member_number">Member number field:<label></td>
+    <td>{$organization_member_number}</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
     <td colspan="2"><strong>Defaults vocabulary settings:</strong></td>
   </tr>
   <tr>
-    <td><label for="long_name">Name:</label></td>
+    <td><label for="long_name">The name of this program:</label></td>
     <td>
     <input name="long_name" type="text" id="long_name" size="60" value="{$long_name}" /></td>
   </tr>
   <tr>
-    <td><label for="short_name">Short Name:</label></td>
+    <td><label for="short_name">Short name (abreviation):</label></td>
     <td>
     <input type="text" name="short_name" id="short_name" value="{$short_name}" /></td>
   </tr>
