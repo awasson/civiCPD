@@ -18,20 +18,66 @@ require_once 'CRM/Core/Page.php';
 
 class CRM_Civicpd_Page_CPDAdmin extends CRM_Core_Page {
   function run() {
-    // Set the page-title 
+  
+  	// HANDLE ANY PRE-PROCESSING FIRST
+  	if( isset( $_POST['action'] ) &&  $_POST['action'] == "update" ) {
+  	
+  		// REMOVE EXISTING civi_cpd_membership_type VALUES
+  		$sql = 'DELETE FROM civi_cpd_membership_type';
+  		$dao = CRM_Core_DAO::executeQuery($sql);
+  	
+  		if( isset( $_POST['memberships'] ) ) {
+  			
+  			// INSERT NEW VALUES
+  			$arr_posted_membership_types = $_POST['memberships'];  			
+  			$sql = "INSERT INTO civi_cpd_membership_type (membership_id) VALUES ";
+			foreach ($arr_posted_membership_types as $item) {
+  				$sql .= "(".$item[0]."),";
+			}
+			$sql = rtrim($sql,",");//remove the extra comma
+			$dao = CRM_Core_DAO::executeQuery($sql);
+  			
+  			
+  		}  
+  	
+  	}
+  
+  
+    // SET THE PAGE TITLE
     CRM_Utils_System::setTitle(ts('CPD Administration'));
     
-    // Get Membership types for the form
-    $sql = "SELECT id, name FROM civicrm_membership_type ORDER BY weight ASC";
-    $dao = CRM_Core_DAO::executeQuery($sql);
-    
-	$membership_checkboxes = "";
-	
-    while( $dao->fetch( ) ) { 
-    	$membership_checkboxes .= '<label><input type="checkbox" name="memberships" value="' . $dao->id . '" id="memberships_' . $dao->id . '" /> ' . $dao->name . '</label><br/>';
+    /**
+  	* GET APPLICABLE MEMBER TYPES  
+  	* FROM THE civi_cpd_membership_type TABLE
+  	* PUT RESULTS IN AN ARRAY
+  	*/
+  	$sql = 'SELECT membership_id FROM civi_cpd_membership_type';
+  	$dao = CRM_Core_DAO::executeQuery($sql);
+  	$arr_membership_types = array();
+    $x = 0;
+    while( $dao->fetch( ) ) {   
+       	$arr_membership_types[$x] = $dao->membership_id;
+       	$x++;	
     }
     
-    // Member editing CPD Activities Limit
+    /**
+  	* GET MEMBERSHIP TYPES FROM THE DATABASE  
+  	* COMPARE WITH TYPES SET IN civi_cpd_membership_type
+  	* OUTPUT CHECKBOXES WITH THE APPROPRIATE CHECKED VALUES
+  	*/
+    $sql = "SELECT id, name FROM civicrm_membership_type ORDER BY weight ASC";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+	$membership_checkboxes = "";
+	$checked = '';
+    while( $dao->fetch( ) ) { 
+    	if(in_array ( $dao->id , $arr_membership_types )) {
+    		$checked = 'checked';
+    	}
+    	$membership_checkboxes .= '<label><input type="checkbox" name="memberships[]" value="' . $dao->id . '" id="memberships_' . $dao->id . '" ' . $checked . ' /> ' . $dao->name . '</label><br/>';
+    	$checked = '';
+    }
+    
+    // TIME LIMIT FOR EDITING CPD ACTIVITIES
     $member_edit_limit = '<label>
     <input type="radio" name="member_update_limit" value="1" id="member_update_limit_0" />
     Current year</label>

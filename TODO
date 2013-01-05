@@ -3,9 +3,9 @@
 ** PRIORITIES **
 
 ADD CPD ADMINISTRATION TOOLS
-- Add DB table for default vocabulary
+- [DONE] Add DB table for default vocabulary
 - Add code to insert default vocabulary as defined on CPD Administration page
-- Add DB table for Membership Types that require CPD
+- [DONE] Add DB table for Membership Types that require CPD
 - Add code to tie the Member types to the full report page
 - Add code to tie member dashboard to CPD based on member type if selected on CPD Administration page
 

@@ -4,6 +4,7 @@
 
 
 <form method="post">
+<input type="hidden" name="action" value="update" />
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td colspan="2"><strong>Membership types subject to CPD activities:</strong></td>

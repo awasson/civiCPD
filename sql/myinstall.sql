@@ -1,13 +1,17 @@
 CREATE  TABLE IF NOT EXISTS civi_cpd_defaults (
-  id INT NULL AUTO_INCREMENT ,
+  id INT NOT NULL AUTO_INCREMENT ,
   name VARCHAR(45) NOT NULL ,
   value VARCHAR(255) NOT NULL ,
   PRIMARY KEY (id) )
 ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS `civi_cpd_membership_type` (
+  `membership_id` int(11) NOT NULL,
+  UNIQUE KEY `membership_id_UNIQUE` (`membership_id`)
+) ENGINE=InnoDB;
 
 CREATE  TABLE IF NOT EXISTS civi_cpd_categories (
-  id INT NULL AUTO_INCREMENT ,
+  id INT NOT NULL AUTO_INCREMENT ,
   category VARCHAR(45) NOT NULL ,
   description VARCHAR(255) NOT NULL ,
   minimum DECIMAL(6,2) NULL ,
@@ -17,7 +21,7 @@ ENGINE = InnoDB;
 
 
 CREATE  TABLE IF NOT EXISTS civi_cpd_activities (
-  id INT NULL AUTO_INCREMENT,
+  id INT NOT NULL AUTO_INCREMENT,
   contact_id INT NOT NULL ,
   category_id INT NOT NULL ,
   credit_date DATETIME NOT NULL ,
