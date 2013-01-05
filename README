@@ -21,5 +21,4 @@ the underlying CMS must allow them to access the civiCRM Contact Dashboard and c
 
 ** KNOWN BUGS **
 
-Currently if a contact has two membership types and both types are applicable to CPD 
-activities duplicate results will occur. This can likely be solved with some SQL and logic.
+[FIXED] If a contact has two membership types and both types are applicable to CPD activities duplicate results will occur.

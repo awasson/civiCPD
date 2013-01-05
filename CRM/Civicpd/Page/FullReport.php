@@ -121,13 +121,18 @@ class CRM_Civicpd_Page_FullReport extends CRM_Core_Page {
        	$x++;	
     }
     
-    for($x =0; $x < count($arr_members); $x++ ) {
+    // FLAG FOR LAST CONTACT ID
+	$last_contact_id = "";
+    
+    for($x = 0; $x < count($arr_members); $x++ ) {
     
     	// ENSURE THAT THE RECORD ISN'T BLANK AS SOME SEEM TO BE
 		if(!is_null($arr_members[$x]["last_name"]) || !is_null($arr_members[$x]["first_name"])) {
 		
-			// ONLY REPORT MEMBER TYPES WE'RE INTERESTED IN
-			if(in_array ( $arr_members[$x]["membership_type_id"] , $arr_membership_types )) {  
+			// REPORT MEMBER TYPES WE'RE INTERESTED IN && NO DUPLICATES
+			if(in_array ( $arr_members[$x]["membership_type_id"] , $arr_membership_types ) && $arr_members[$x]["id"] != $last_contact_id) {  
+	
+			  	$last_contact_id = $arr_members[$x]["id"];
 			  	
     			$report_table .= '<tr>';
     			$report_table .= '<td>' . $arr_members[$x]["last_name"] . '</td>';
