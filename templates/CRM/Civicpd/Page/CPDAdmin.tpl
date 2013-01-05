@@ -1,5 +1,5 @@
 <h3>Continuing Professional Development Administration</h3>
-<p>This page is currently a mockup and will not affect the system. It will eventually set the defaults for the Continued Professional development system. </p>
+<p>This page is in progress and only affect the membership types reported. It will eventually set the defaults for the Continued Professional development system. </p>
 
 
 
