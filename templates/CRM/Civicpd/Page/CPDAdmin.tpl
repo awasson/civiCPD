@@ -1,5 +1,5 @@
-<h3>Continuing Professional Development Administration</h3>
-<p>This page is in progress and only effects the membership types subject to CPD activities. It will eventually set the defaults for the Continued Professional development system. </p>
+<h3>{$long_name} Administration</h3>
+<p>This page is in progress and only effects the membership types subject to {$short_name} activities. It will set the defaults for the {$long_name} system. </p>
 
 
 
@@ -7,7 +7,7 @@
 <input type="hidden" name="action" value="update" />
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td colspan="2"><strong>Membership types subject to CPD activities:</strong></td>
+    <td colspan="2"><strong>Membership types subject to {$short_name} activities:</strong></td>
   </tr>
   <tr>
     <td colspan="2">{$membership_checkboxes}</td>
@@ -30,7 +30,7 @@
   <tr>
     <td colspan="2"><strong>Your organization's internal membership number:</strong><br/>
     Most organizations have an alphanumeric membership number attached to a members contact record. 
-    By default the CPD module uses the <i>'external_identifier'</i> however the <i>'user_unique_id'</i> can be used instead.</td>
+    By default the {$short_name} module uses the <i>'external_identifier'</i> however the <i>'user_unique_id'</i> can be used instead.</td>
   </tr>
   <tr>
     <td nowrap><label for="organization_member_number">Member number field:<label></td>
@@ -61,7 +61,7 @@
 </table>
 </form>
 
-<p>Members can access and update their CPD reporting pages from their Contact Dashboard</p>
+<p>Members can access and update their {$short_name} reporting pages from their Contact Dashboard</p>
 
 {literal}
 

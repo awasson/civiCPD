@@ -1,9 +1,7 @@
-CREATE  TABLE IF NOT EXISTS civi_cpd_defaults (
-  id INT NOT NULL AUTO_INCREMENT ,
-  name VARCHAR(45) NOT NULL ,
-  value VARCHAR(255) NOT NULL ,
-  PRIMARY KEY (id) )
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `civi_cpd_defaults` (
+  `name` varchar(45) NOT NULL,
+  `value` varchar(255) NOT NULL
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `civi_cpd_membership_type` (
   `membership_id` int(11) NOT NULL,
@@ -18,7 +16,6 @@ CREATE  TABLE IF NOT EXISTS civi_cpd_categories (
   maximum DECIMAL(6,2) NULL ,
   PRIMARY KEY (id) )
 ENGINE = InnoDB;
-
 
 CREATE  TABLE IF NOT EXISTS civi_cpd_activities (
   id INT NOT NULL AUTO_INCREMENT,

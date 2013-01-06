@@ -1,14 +1,16 @@
-# Andrew Wasson January 4, 2013
+# Andrew Wasson January 6, 2013
 
 ** PRIORITIES **
 
 ADD CPD ADMINISTRATION TOOLS
 - [DONE] Add DB table for default vocabulary
-- Add code to insert default vocabulary as defined on CPD Administration page
+- [DONE] Add code to insert default vocabulary as defined on CPD Administration page
 - [DONE] Add DB table for Membership Types that require CPD
 - [DONE] Add code to tie the Member types to the Administration page
 - [DONE] Add code to tie the Member types to the full report page
-- Add code to tie member dashboard to CPD based on member type if selected on CPD Administration page
+- Add code to tie member dashboard to CPD based on member type as defined on CPD Administration page
+- Add code to tie member number to member number field defined on CPD Administration page
+- Add code to tie the name and abbreviated name of the program to the fields defined on CPD Administration page
 
 ADD GLOBAL REPORTING FUNCTIONS FOR ADMINISTRATORS
 - [DONE] Add button on Admin menu for producing a complete report in a table of all members and scores 
