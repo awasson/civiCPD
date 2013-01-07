@@ -1,4 +1,4 @@
-<h3>Continuing Professional Development Activities for: <a href="#" title="Click to choose a different year" id="report_year">{$smarty.session.report_year}</a> <select class="cpd-frm" name="select_year" id="select_year">{$select_years}</select></h3>
+<h3>{$civi_cpd_long_name} Activities for: <a href="#" title="Click to choose a different year" id="report_year">{$smarty.session.report_year}</a> <select class="cpd-frm" name="select_year" id="select_year">{$select_years}</select></h3>
 <p>This report is for the year {$smarty.session.report_year}. To choose another year to report, click on the year in the sub-title above.</p>
 
 {$report_table}

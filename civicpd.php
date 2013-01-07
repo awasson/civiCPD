@@ -94,13 +94,72 @@ function civicpd_civicrm_tabs( &$tabs, $contactID ) {
                      'weight' => 300 );
 }
 
-// Use hook_civicrm_pageRun to insert dynamic CPD information into 'My Contact Dashboard'
+/**
+ * Use hook_civicrm_pageRun to set the default variables
+ * and insert dynamic CPD information into 'My Contact Dashboard'
+ */
 function civicpd_civicrm_pageRun( &$page ) {
     // Assign variables to the template using: $page->assign( 'varName', $varValue );
     // Get variables using: $page->getVar( 'varName' );
-
-    if($page->getVar('_name')=='CRM_Contact_Page_View_UserDashBoard') {
     
+    
+    /**
+     * PULL THE DEFAULTS FROM THE DATABASE 
+     * AND SET THE FORM FIELDS 
+     * ACCORDING TO THEIR VALUES
+     */
+    $sql = "SELECT * FROM civi_cpd_defaults";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+  	$arr_civi_cpd_defaults = array();
+    $x = 0;
+    while( $dao->fetch( ) ) {   
+       	$arr_civi_cpd_defaults[$dao->name] = $dao->value;
+       	$x++;	
+    }
+    
+    // SET VARIABLES FROM DEFAULTS ARRAY
+    if(is_array ($arr_civi_cpd_defaults)) {
+    
+    	if(isset($arr_civi_cpd_defaults['member_update_limit'])) {
+    		$civi_cpd_member_update_limit = $arr_civi_cpd_defaults['member_update_limit'];
+    	} else {
+    		$civi_cpd_member_update_limit = 0;
+    	}
+    	
+    	if(isset($arr_civi_cpd_defaults['organization_member_number'])) {
+    		$civi_cpd_organization_member_number_field = $arr_civi_cpd_defaults['organization_member_number'];
+    	} else {
+    		$civi_cpd_organization_member_number_field = 'civicrm_contact.external_identifier';
+    	}
+    	
+    	if(isset($arr_civi_cpd_defaults['long_name'])) {
+    		$civi_cpd_long_name = $arr_civi_cpd_defaults['long_name'];
+    	} else {
+    		$civi_cpd_long_name = 'Continuing Professional Development';
+    	}
+    	
+    	if(isset($arr_civi_cpd_defaults['short_name'])) {
+    		$civi_cpd_short_name = $arr_civi_cpd_defaults['short_name'];
+    	} else {
+    		$civi_cpd_short_name = 'CPD';
+    	}
+    	
+    } else {
+    		$civi_cpd_member_update_limit = 0;
+    		$civi_cpd_organization_member_number_field = 'civicrm_contact.external_identifier';
+    		$civi_cpd_long_name = 'Continuing Professional Development';
+    		$civi_cpd_short_name = 'CPD';
+    }
+    
+    $page->assign( 'civi_cpd_member_update_limit', $civi_cpd_member_update_limit );
+    $page->assign( 'civi_cpd_organization_member_number_field', $civi_cpd_organization_member_number_field );
+    $page->assign( 'civi_cpd_long_name', $civi_cpd_long_name );
+    $page->assign( 'civi_cpd_short_name', $civi_cpd_short_name );
+    
+	
+	// ADD CPD INFO + LINK TO 'MY CONTACT DASHBOARD'
+    if($page->getVar('_name')=='CRM_Contact_Page_View_UserDashBoard') {
+    	
     	$current_year = date("Y");
 		
 		if(!isset($_SESSION["report_year"])) {
@@ -127,9 +186,22 @@ function civicpd_civicrm_pageRun( &$page ) {
         	$total_credits = 0;
     	}
 	
-		$mcd_cpd_message = 'You currently have <strong>'. $total_credits .'</strong> CPD credits for ' . $_SESSION["report_year"] . '. <a href="/civicrm/civicpd/report"><u>Click here</u></a> to update your CPD activities.';
-	
-    	$page->assign( 'mcd_cpd_message', $mcd_cpd_message );
+		$mcd_cpd_message = 'You currently have <strong>'. $total_credits .'</strong> ' . $civi_cpd_short_name . ' credits for ' . $_SESSION["report_year"] . '. <a href="/civicrm/civicpd/report"><u>Click here</u></a> to update your ' . $civi_cpd_short_name . ' activities.';
+		
+		// IF THIS CONTACT HAS AN APPLICABLE MEMBERSHIP TYPE, INSERT THE CPD INFO IN THEIR CONTACT DASHBOARD
+    	$sql = 'SELECT civi_cpd_membership_type.membership_id
+				, civicrm_membership.contact_id 
+				FROM civicrm_membership 
+				INNER JOIN civi_cpd_membership_type 
+				ON civi_cpd_membership_type.membership_id = civicrm_membership.membership_type_id 
+				WHERE civicrm_membership.contact_id = ' . $contact_id;
+		$dao = CRM_Core_DAO::executeQuery($sql);
+		
+		if ($dao->N > 0) {
+    		$page->assign( 'mcd_cpd_message', $mcd_cpd_message );
+    	} else {
+    		$page->assign( 'mcd_cpd_message', 'Your membership type is not associated with the ' .$civi_cpd_long_name. ' program.' );
+    	}
     
     }
 }

@@ -2,16 +2,6 @@
 
 ** PRIORITIES **
 
-ADD CPD ADMINISTRATION TOOLS
-- [DONE] Add DB table for default vocabulary
-- [DONE] Add code to insert default vocabulary as defined on CPD Administration page
-- [DONE] Add DB table for Membership Types that require CPD
-- [DONE] Add code to tie the Member types to the Administration page
-- [DONE] Add code to tie the Member types to the full report page
-- Add code to tie member dashboard to CPD based on member type as defined on CPD Administration page
-- Add code to tie member number to member number field defined on CPD Administration page
-- Add code to tie the name and abbreviated name of the program to the fields defined on CPD Administration page
-
 ADD GLOBAL REPORTING FUNCTIONS FOR ADMINISTRATORS
 - [DONE] Add button on Admin menu for producing a complete report in a table of all members and scores 
 - [DONE] Format the 'Full Report' page 
@@ -43,10 +33,10 @@ UPDATE UserDashBoard.tpl TO USE CIVICRM REGIONS
 COMPLETE CONTACT RECORD TAB CODE
 - Specifically the URL attribute so that it opens a page where admin users can view, update, delete a contact's CPD record.
 
-
-
-
 ** COMPLETED **
+
+RESTRICT LINK TO CPD FROM 'MY CONTACT DASHBOARD' TO APPLICABLE MEMBERSHIPS
+[DONE] - Use civi_cpd_membership_type entries to restrict access to CPD info on contact dashboard.
 
 ADD DELETE BUTTON FOR ACTIVITIES [DONE]
 - [DONE] Just a simple delete button to the editing page and then complete the code in CPDReport.php 
@@ -58,6 +48,17 @@ ADD MULTI-YEAR CAPABILITY FOR LOGGING AND REPORTING [DONE]
 
 ADD PRINT-PAGE CAPABILITY TO REPORTING PAGE [DONE] 
 - [DONE] Add Javascript print() 
+
+ADD CPD ADMINISTRATION TOOLS
+- [DONE] Add DB table for default vocabulary
+- [DONE] Add code to insert default vocabulary as defined on CPD Administration page
+- [DONE] Add DB table for Membership Types that require CPD
+- [DONE] Add code to tie the Member types to the Administration page
+- [DONE] Add code to tie the Member types to the full report page
+- [DONE] Add code to tie member dashboard to CPD based on member type as defined on CPD Administration page
+- [DONE] Add code to tie member number to member number field defined on CPD Administration page
+- [DONE] Add code to tie the name and abbreviated name of the program to the fields defined on CPD Administration page
+- [DONE] Add code to prevent members from editing or adding records beyond the time limits defined on the Admin page
 
 
 

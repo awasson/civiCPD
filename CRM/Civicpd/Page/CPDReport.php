@@ -106,9 +106,57 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
    				break;
 		}
  	}
+ 	
+ 	
+ 	/**
+     * PULL THE CPD NAME FOR THE PAGE TITLE
+     */
+    $sql = "SELECT * FROM civi_cpd_defaults";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+  	$arr_defaults = array();
+    $x = 0;
+    while( $dao->fetch( ) ) {   
+       	$arr_defaults[$dao->name] = $dao->value;
+       	$x++;	
+    }
+    
+    // SET VARIABLES FROM DEFAULTS ARRAY
+    if(is_array ($arr_defaults)) {
+    	
+    	if(isset($arr_defaults['member_update_limit'])) {
+    		$member_update_limit = $arr_defaults['member_update_limit'];
+    	} else {
+    		$member_update_limit = 0;
+    	}
+    
+    	if(isset($arr_defaults['organization_member_number'])) {
+    		$organization_member_number_field = $arr_defaults['organization_member_number'];
+    	} else {
+    		$organization_member_number_field = 'civicrm_contact.external_identifier';
+    	}
+    	
+    	if(isset($arr_defaults['long_name'])) {
+    		$long_name = $arr_defaults['long_name'];
+    	} else {
+    		$long_name = 'Continuing Professional Development';
+    	}
+    	
+    	if(isset($arr_defaults['short_name'])) {
+    		$short_name = $arr_defaults['short_name'];
+    	} else {
+    		$short_name = 'CPD';
+    	}
+    	
+    } else {
+    		$member_update_limit = 0;
+    		$organization_member_number_field = 'civicrm_contact.external_identifier';
+    		$long_name = 'Continuing Professional Development';
+    		$short_name = 'CPD';
+    }
+
   
     // Set the page-title
-    CRM_Utils_System::setTitle(ts('CPD Reporting'));
+    CRM_Utils_System::setTitle(ts($short_name . ' Reporting'));
     
     /**
      * After processing actions above, Query Activities table: 
@@ -121,14 +169,54 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
 	// Get the name and membership number
 	// Membership number will be external_identifier
 	if(isset($contact_id)){
-    	$sql = "SELECT display_name, external_identifier FROM civicrm_contact WHERE id = " . $contact_id;
-    	$dao = CRM_Core_DAO::executeQuery($sql);
-    	while( $dao->fetch( ) ) {    
-    		$display_name 			= $dao->display_name;
-    		$external_identifier	= $dao->external_identifier;
-    	}
+	
+		switch ($organization_member_number_field) {
+  			case 'civicrm_contact.external_identifier':
+  			
+  				$sql = "SELECT display_name, external_identifier FROM civicrm_contact WHERE id = " . $contact_id;
+    			$dao = CRM_Core_DAO::executeQuery($sql);
+    			while( $dao->fetch( ) ) {    
+    				$display_name 			= $dao->display_name;
+    				$membership_number	= $dao->external_identifier;
+    			}
+	
+			break;
+			
+			case 'civicrm_contact.user_unique_id':
+			
+				$sql = "SELECT display_name, user_unique_id FROM civicrm_contact WHERE id = " . $contact_id;
+    			$dao = CRM_Core_DAO::executeQuery($sql);
+    			while( $dao->fetch( ) ) {    
+    				$display_name 			= $dao->display_name;
+    				$membership_number	= $dao->user_unique_id;
+    			}
+	
+			break;
+			
+			case 'civicrm_membership.id':
+			
+				$sql = "SELECT civicrm_contact.display_name
+					, civicrm_membership.id AS membership_number
+					FROM civicrm_membership 
+					INNER JOIN civicrm_contact 
+					ON civicrm_contact.id = civicrm_membership.contact_id 
+					WHERE civicrm_contact.id = " . $contact_id;
+    			$dao = CRM_Core_DAO::executeQuery($sql);
+    			while( $dao->fetch( ) ) {    
+    				$display_name 			= $dao->display_name;
+    				$membership_number	= $dao->membership_number;
+    			}
+	
+			break;
+   				
+			default:
+   				break;
+		}
+	
+	
+    	
     	$this->assign('display_name', $display_name);
-    	$this->assign('external_identifier', $external_identifier);
+    	$this->assign('membership_number', $membership_number);
 	}
      
     // SUM(Activities) from the database for this contact, for this year, GROUP BY Categories
@@ -151,20 +239,29 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
     $icounter = 1;
   	
     while( $dao->fetch( ) ) {        
-        $output	.= '<tr valign="top">'
-				.  '<td height="18"><span class="CE">' . $icounter . '. ' . $dao->category . '</span><br/>'
-        		.  '<strong>' . abs($dao->credits) . ' credits </strong><br/>'
-        		.  '(minimum ' . abs($dao->minimum) . ' credits, maximum ' . abs($dao->maximum) . ' credits)<br/>'
-        		.  $dao->description . ' </td>'
-    			.  '</tr>'
-    			.  '<tr valign="top">'
-      			.  '<td><!-- put in buttons for add edit view -->'
-        		.  '<a href="/civicrm/civicpd/EditReport?action=update&amp;catid=' . $dao->id . '">View</a> | <a href="/civicrm/civicpd/EditReport?action=new&amp;catid=' . $dao->id . '">New</a>'
-      			.  '</td>'      
-    			.  '</tr>'
-    			.  '<tr valign="top">'
-      			.  '<td>&nbsp;</td>'
-    			.  '</tr>';
+        $output	.= '<tr valign="top">
+        				<td height="18"><span class="CE">' . $icounter . '. ' . $dao->category . '</span><br/>	
+        				<strong>' . abs($dao->credits) . ' credits </strong><br/>
+        				(minimum ' . abs($dao->minimum) . ' credits, maximum ' . abs($dao->maximum) . ' credits)
+        				<br/>' .  $dao->description . ' </td>
+        			</tr>
+        			<tr valign="top">
+        				<td><!-- put in buttons for add edit view -->
+        				<a href="/civicrm/civicpd/EditReport?action=update&amp;catid=' . $dao->id . '">View</a>';
+        		
+    	// ARE THEY ALLOWED TO EDIT THIS?
+    	if($_SESSION["report_year"] > (date("Y") - $member_update_limit)) {
+    		$output .= 	' | <a href="/civicrm/civicpd/EditReport?action=new&amp;catid=' . $dao->id . '">New</a>';
+    	} 
+    	elseif ($member_update_limit==0) {
+    		$output .= 	' | <a href="/civicrm/civicpd/EditReport?action=new&amp;catid=' . $dao->id . '">New</a>';
+    	} 			
+			
+      	$output	.= '</td>
+      			</tr>
+      			<tr valign="top">
+      				<td>&nbsp;</td>
+      			</tr>';
     	$icounter++;
      }
 

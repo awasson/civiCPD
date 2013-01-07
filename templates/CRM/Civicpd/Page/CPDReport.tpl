@@ -1,8 +1,8 @@
-<h3>Review and update your CPD activities.</h3>
+<h3>Review and update your {$civi_cpd_long_name} activities.</h3>
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
   <tbody>
   	<tr valign="top">
-      <th nowrap="">Continuing Professional Development Activities for: <a href="#" title="Click to choose a different year" style="font-weight:normal;" id="report_year">{$smarty.session.report_year}</a> <select class="cpd-frm" name="select_year" id="select_year">{$select_years}</select>
+      <th nowrap="">{$civi_cpd_long_name} Activities for: <a href="#" title="Click to choose a different year" style="font-weight:normal;" id="report_year">{$smarty.session.report_year}</a> <select class="cpd-frm" name="select_year" id="select_year">{$select_years}</select>
       <p class="cpd-message">This report is for the year {$smarty.session.report_year}. To choose another year to report, click on the year above.</p></th>
     </tr>
     <tr valign="top">
@@ -12,7 +12,7 @@
     {$output}
     <!-- End Looping Results -->
     <tr valign="top">
-      <td height="18" colspan="7">CDP credits for activities undertaken 
+      <td height="18" colspan="7">{$civi_cpd_short_name} credits for activities undertaken 
         in the calendar year {$smarty.session.report_year}: <strong>{$total_credits}</strong></td>
     </tr>
     <tr valign="top">
@@ -22,7 +22,7 @@
             <tr>
               <td nowrap="nowrap">{$display_name}</td>
               <td width="3%" nowrap="nowrap">&nbsp;</td>
-              <td nowrap="nowrap">Membership Number: {$external_identifier}</td>
+              <td nowrap="nowrap">Membership Number: {$membership_number}</td>
               <td width="3%" nowrap="nowrap">&nbsp;</td>
               <td nowrap="nowrap">Date: {$today}</td>
             </tr>

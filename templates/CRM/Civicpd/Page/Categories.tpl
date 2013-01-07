@@ -6,7 +6,7 @@
 <input type="submit" name="submit" id="submit" value="Add Category" class="form-submit-inline" />
 </form>
 </p>
-<h3>Existing Categories</h3> 
+<h3>Existing {$civi_cpd_long_name} Categories</h3> 
 <p>&nbsp;</p>
 <table class="civi-cpd-list" border="0" cellspacing="0" cellpadding="0">
   <tr>

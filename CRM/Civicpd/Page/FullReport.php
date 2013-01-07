@@ -55,9 +55,6 @@ class CRM_Civicpd_Page_FullReport extends CRM_Core_Page {
 		$select_years .= '<option value="' . $i . '" ' . $selected . '>' . $i . '</option>';
 	} 
 	$this->assign('select_years', $select_years);
-  
-    // SET PAGE TITLE
-    CRM_Utils_System::setTitle(ts('Review CPD Full Report'));
 
     /**
   	* GRAB CATEGORIES  
@@ -173,14 +170,46 @@ class CRM_Civicpd_Page_FullReport extends CRM_Core_Page {
     	}
     	
     }
-    
-    
-    
-    			   
-    			       
+			       
     // END TABLE
     $report_table .= '</table>';
-
+    
+    /**
+     * PULL THE CPD NAME FOR THE PAGE TITLE
+     */
+    $sql = "SELECT * FROM civi_cpd_defaults";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+  	$arr_defaults = array();
+    $x = 0;
+    while( $dao->fetch( ) ) {   
+       	$arr_defaults[$dao->name] = $dao->value;
+       	$x++;	
+    }
+    
+    // SET VARIABLES FROM DEFAULTS ARRAY
+    if(is_array ($arr_defaults)) {
+    	
+    	if(isset($arr_defaults['long_name'])) {
+    		$long_name = $arr_defaults['long_name'];
+    	} else {
+    		$long_name = 'Continuing Professional Development';
+    	}
+    	
+    	if(isset($arr_defaults['short_name'])) {
+    		$short_name = $arr_defaults['short_name'];
+    	} else {
+    		$short_name = 'CPD';
+    	}
+    	
+    } else {
+    		$long_name = 'Continuing Professional Development';
+    		$short_name = 'CPD';
+    }
+    
+	
+	// SET PAGE TITLE
+    CRM_Utils_System::setTitle(ts('Review ' . $short_name . ' Full Report'));
+    
     $this->assign( 'report_table', $report_table );
     
     parent::run();

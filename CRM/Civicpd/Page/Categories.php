@@ -69,15 +69,9 @@ class CRM_Civicpd_Page_Categories extends CRM_Core_Page {
 		}
  	}
 
-	
-	// Set the page-title
-    CRM_Utils_System::setTitle(ts('Review CPD Categories'));
-	
-    
     /**
      * After any processing, Query Categories table
-     * Ok, this is a bit of a hack... I should just pass the data array over to 
-     * the view Categories.tpl and let it loop out the results.
+     * Code to be refined later
      */
     $sql = "SELECT * FROM civi_cpd_categories";
     $dao = CRM_Core_DAO::executeQuery($sql);
@@ -95,7 +89,42 @@ class CRM_Civicpd_Page_Categories extends CRM_Core_Page {
         		. "<td style='text-align: center;'><a href='/civicrm/civicpd/EditCategories?id=".$dao->id."'>edit</a></td>"
         		. "</tr>";
      }
+     
+    /**
+     * PULL THE CPD NAME FOR THE PAGE TITLE
+     */
+    $sql = "SELECT * FROM civi_cpd_defaults";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+  	$arr_defaults = array();
+    $x = 0;
+    while( $dao->fetch( ) ) {   
+       	$arr_defaults[$dao->name] = $dao->value;
+       	$x++;	
+    }
+    
+    // SET VARIABLES FROM DEFAULTS ARRAY
+    if(is_array ($arr_defaults)) {
+    	
+    	if(isset($arr_defaults['long_name'])) {
+    		$long_name = $arr_defaults['long_name'];
+    	} else {
+    		$long_name = 'Continuing Professional Development';
+    	}
+    	
+    	if(isset($arr_defaults['short_name'])) {
+    		$short_name = $arr_defaults['short_name'];
+    	} else {
+    		$short_name = 'CPD';
+    	}
+    	
+    } else {
+    		$long_name = 'Continuing Professional Development';
+    		$short_name = 'CPD';
+    }
 
+	// Set the page-title
+    CRM_Utils_System::setTitle(ts('Review ' . $short_name . ' Categories'));
+	
 	$this->assign('categories', $categories);
 
     parent::run();

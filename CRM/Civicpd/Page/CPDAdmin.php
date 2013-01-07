@@ -173,7 +173,7 @@ class CRM_Civicpd_Page_CPDAdmin extends CRM_Core_Page {
     		$short_name = 'CPD';
     }
     
-    $arr_member_edit_limit = array('1','2','3','5','0');
+    $arr_member_edit_limit = array('1','2','3','4','5','0');
     $member_edit_limit = "";
     $member_edit_limit_text = "";
     $checked = '';

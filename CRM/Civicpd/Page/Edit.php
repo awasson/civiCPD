@@ -18,13 +18,46 @@ require_once 'CRM/Core/Page.php';
 
 class CRM_Civicpd_Page_Edit extends CRM_Core_Page {
   function run() {
+  
+  /**
+     * PULL THE CPD NAME FOR THE PAGE TITLE
+     */
+    $sql = "SELECT * FROM civi_cpd_defaults";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+  	$arr_defaults = array();
+    $x = 0;
+    while( $dao->fetch( ) ) {   
+       	$arr_defaults[$dao->name] = $dao->value;
+       	$x++;	
+    }
+    
+    // SET VARIABLES FROM DEFAULTS ARRAY
+    if(is_array ($arr_defaults)) {
+    	
+    	if(isset($arr_defaults['long_name'])) {
+    		$long_name = $arr_defaults['long_name'];
+    	} else {
+    		$long_name = 'Continuing Professional Development';
+    	}
+    	
+    	if(isset($arr_defaults['short_name'])) {
+    		$short_name = $arr_defaults['short_name'];
+    	} else {
+    		$short_name = 'CPD';
+    	}
+    	
+    } else {
+    		$long_name = 'Continuing Professional Development';
+    		$short_name = 'CPD';
+    }
+
     
 	if($_SERVER['REQUEST_METHOD']=='GET') {
 	
 		if(isset($_GET['id'])){
 		
 			//THIS IS AN EDITING PAGE
-    		CRM_Utils_System::setTitle(ts('Edit CPD Categories'));
+    		CRM_Utils_System::setTitle(ts('Edit ' . $short_name . ' Categories'));
 		
 			$catid	= $_GET['id'];
 			$sql	= "SELECT * FROM civi_cpd_categories WHERE id = $catid";
@@ -55,7 +88,7 @@ class CRM_Civicpd_Page_Edit extends CRM_Core_Page {
 			
 			if($action == 'new'){
 				//THIS IS A NEW CATEGORY ENTRY
-    			CRM_Utils_System::setTitle(ts('Add CPD Category'));
+    			CRM_Utils_System::setTitle(ts('Add ' . $short_name . ' Category'));
 				
 				$this->assign('action', 'insert');
 				$this->assign('submit_button', '<input type="submit" name="submit" id="submit" value="Save" class="form-submit-inline" />');

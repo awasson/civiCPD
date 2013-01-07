@@ -17,6 +17,45 @@ require_once 'CRM/Core/Page.php';
 
 class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
   function run() {
+  
+  	/**
+     * PULL THE CPD NAME FOR THE PAGE TITLE
+     */
+    $sql = "SELECT * FROM civi_cpd_defaults";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+  	$arr_defaults = array();
+    $x = 0;
+    while( $dao->fetch( ) ) {   
+       	$arr_defaults[$dao->name] = $dao->value;
+       	$x++;	
+    }
+    
+    // SET VARIABLES FROM DEFAULTS ARRAY
+    if(is_array ($arr_defaults)) {
+    	
+    	if(isset($arr_defaults['member_update_limit'])) {
+    		$member_update_limit = $arr_defaults['member_update_limit'];
+    	} else {
+    		$member_update_limit = 0;
+    	}
+    	
+    	if(isset($arr_defaults['long_name'])) {
+    		$long_name = $arr_defaults['long_name'];
+    	} else {
+    		$long_name = 'Continuing Professional Development';
+    	}
+    	
+    	if(isset($arr_defaults['short_name'])) {
+    		$short_name = $arr_defaults['short_name'];
+    	} else {
+    		$short_name = 'CPD';
+    	}
+    	
+    } else {
+    	$member_update_limit = 0;
+    	$long_name = 'Continuing Professional Development';
+    	$short_name = 'CPD';
+    }
    
    if($_SERVER['REQUEST_METHOD']=='GET') {
 	
@@ -52,7 +91,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
   				case 'new':
   				
 					// Insert new activity under this category for this contact for this time period.
-   					CRM_Utils_System::setTitle(ts('Insert A New CPD Activity'));
+   					CRM_Utils_System::setTitle(ts('Insert A New ' . $short_name . ' Activity'));
    					
    					$sql = "SELECT * FROM civi_cpd_categories WHERE id = " . $category_id;
    					$dao = CRM_Core_DAO::executeQuery($sql);
@@ -96,7 +135,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
   									</table>
 								</form>';
 					
-					$this->assign("sub_title", "Use the form below to insert a new CPD <em>" . $category . "</em> activity"); 
+					$this->assign('sub_title', 'Use the form below to insert a new ' . $long_name . ' <em>' . $category . '</em> activity'); 
 					
 					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/report?clear\';" />'); 
 					
@@ -107,7 +146,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    				case 'edit':
   				
 					// Edit an existing activity under this category for this contact for this time period.
-   					CRM_Utils_System::setTitle(ts('Edit A CPD Activity'));
+   					CRM_Utils_System::setTitle(ts('Edit ' . $short_name . ' Activity'));
    					
    					if(isset($_GET['activity_id'])) {
    						$activity_id = $_GET['activity_id'];
@@ -183,7 +222,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
   									</table>
 								</form>';
 					
-					$this->assign("sub_title", "Use the form below to update this CPD <em>" . $category . "</em> activity"); 
+					$this->assign('sub_title', 'Use the form below to update this ' . $long_name . ' <em>' . $category . '</em> activity'); 
 					
 					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/report?clear\';" />'); 
 					
@@ -199,7 +238,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
 					$_SESSION['cpd_message'] = '';
 				
    					// List out all of the entries in this category (for this contact for this time period) with an edit link beside each item
-   					CRM_Utils_System::setTitle(ts('Update Your CPD Activities'));
+   					CRM_Utils_System::setTitle(ts('Update Your ' . $short_name . ' Activities'));
 										
    					$sql = "SELECT civi_cpd_categories.category
    								, civi_cpd_activities.id AS activity_id
@@ -248,8 +287,18 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
     									<td width="5%" align="center" valign="top">'. abs($dao->credits) .'</td>
     									<td width="20%" valign="top">'. $dao->activity .'</td>
     									<td width="60%" valign="top">'. $dao->notes .'</td>
-    									<td width="10%" valign="top" style="text-align:center;"><a href="/civicrm/civicpd/EditReport?action=edit&amp;activity_id=' . $activity_id . '">edit</a></td>
-  									</tr>';
+    									<td width="10%" valign="top" style="text-align:center;">';
+    						
+    						// ARE THEY ALLOWED TO EDIT THIS?
+    						if($_SESSION["report_year"] > (date("Y") - $member_update_limit)) {
+    							$output .= 	'<a href="/civicrm/civicpd/EditReport?action=edit&amp;activity_id=' . $activity_id . '">edit</a>';
+    						} 
+    						elseif ($member_update_limit==0) {
+    							$output .= 	'<a href="/civicrm/civicpd/EditReport?action=edit&amp;activity_id=' . $activity_id . '">edit</a>';
+    						} 	else {
+    							$output .= 	'locked';
+    						}			
+    						$output .= 	'</td></tr>';
   									
   						}
   						
@@ -257,7 +306,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    					
    					$output .= '</table>';
    					
-   					$this->assign("sub_title", "Update your CPD <em>" . $category . "</em> activities"); 
+   					$this->assign('sub_title', 'Update your ' . $long_name . ' <em>' . $category . '</em> activities'); 
    					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/report\';" />'); 
    					$this->assign('new_button', '<div style="display: inline-block; margin-bottom: -19px; margin-top: 20px;">
 												<a title="New ' . $category . ' Activity" class="button" href="/civicrm/civicpd/EditReport?action=new&catid=' . $category_id . '">

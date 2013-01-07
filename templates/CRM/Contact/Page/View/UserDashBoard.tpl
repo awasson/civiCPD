@@ -44,7 +44,7 @@
 <tr>
 	<td>
     	<div class="header-dark">
-    	{ts}Your Continuing Professional Development Credits{/ts} 
+    	{ts}Your {$civi_cpd_long_name} Credits{/ts} 
         </div>	  
         <div id="cpddescription">
     		<div class="view-content"> 
