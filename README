@@ -33,5 +33,6 @@ Note: Currently only tested on Drupal 7.18 with civiCRM 4.2.x
 
 3) Under Manage Extensions, install the  civiCRM Continued Professional Development module.
 
-* In this beta version I have experienced a PHP error/warning originating from the civicpd.civix.php file. 
-It hasn't affected the module or performance so it is likely a bug that we will catch as the module matures.
+* In this beta version upon installation, I have experienced a PHP error/warning originating from 
+the civicpd.civix.php file. It hasn't affected the module or performance so it is likely a bug 
+that we will catch as the module matures.
