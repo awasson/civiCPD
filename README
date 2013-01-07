@@ -16,10 +16,10 @@ where they can review, edit or add CPD activities and print out their CPD statem
 
 Contacts will require a membership of some sort in order to be included in the CPD system. 
 
-Note: In order for regular users to be able to access the CPD section, the permissions of 
+* In order for regular users to be able to access the CPD section, the permissions of 
 the underlying CMS must allow them to access the civiCRM Contact Dashboard and civiCRM itself.
 
-Note: Currently only tested on Drupal 7.18 with civiCRM 4.2.x
+* Currently only tested on Drupal 7.18 with civiCRM 4.2.x
 
 ** KNOWN BUGS **
 
