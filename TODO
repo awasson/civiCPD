@@ -3,16 +3,17 @@
 ** PRIORITIES **
 
 ADD GLOBAL REPORTING FUNCTIONS FOR ADMINISTRATORS
-- [DONE] Add button on Admin menu for producing a complete report in a table of all members and scores 
-- [DONE] Format the 'Full Report' page 
 - Add database join to include member type and member since to full report 
 - Add edit links to full report to provide editing of any member's activities by administration
 - Add download of report in CSV
+- [DONE] Add button on Admin menu for producing a complete report in a table of all members and scores 
+- [DONE] Format the 'Full Report' page 
+
 
 ADD DELETE BUTTON FOR CATEGORIES
+- InnoDB CREATE TABLE Query to link Category Index with Activities table so that only empty categories can be deleted.
 - [DONE] A delete button to the editing page and then complete the code in CPDReport.php 
 - [DONE] Add a Javascript utility so that users have to confirm that they want to delete an Activity before running the delete query 
-- InnoDB CREATE TABLE Query to link Category Index with Activities table so that only empty categories can be deleted.
 
 
 
@@ -32,6 +33,9 @@ UPDATE UserDashBoard.tpl TO USE CIVICRM REGIONS
 
 COMPLETE CONTACT RECORD TAB CODE
 - Specifically the URL attribute so that it opens a page where admin users can view, update, delete a contact's CPD record.
+
+
+
 
 ** COMPLETED **
 
