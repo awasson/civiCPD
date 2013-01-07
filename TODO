@@ -1,14 +1,16 @@
 # Andrew Wasson January 6, 2013
 
-** PRIORITIES **
-
+** FIRST PRIORITIES **
 ADD GLOBAL REPORTING FUNCTIONS FOR ADMINISTRATORS
-- Add database join to include member type and member since to full report 
 - Add edit links to full report to provide editing of any member's activities by administration
 - Add download of report in CSV
+- [DONE] Update code for pulling membership number to use the membership number field defined in the administration page
+- [DONE] Add database join to include member type and member since to full report 
 - [DONE] Add button on Admin menu for producing a complete report in a table of all members and scores 
 - [DONE] Format the 'Full Report' page 
 
+STREAMLINE THE MEMBER'S REPORTING PAGE
+- Change the default view so that it queries and hides all record under a particular category which can be shown via jQuery
 
 ADD DELETE BUTTON FOR CATEGORIES
 - InnoDB CREATE TABLE Query to link Category Index with Activities table so that only empty categories can be deleted.
@@ -19,7 +21,6 @@ ADD DELETE BUTTON FOR CATEGORIES
 
 
 ** SECONDARY PRIORITIES **
-
 REVIEW AND REFACTOR MV CODE BETWEEN PHP MODELS AND SMARTY TEMPLATES
 
 UPDATE UserDashBoard.tpl TO USE CIVICRM REGIONS

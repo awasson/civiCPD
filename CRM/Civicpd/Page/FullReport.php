@@ -22,6 +22,45 @@ class CRM_Civicpd_Page_FullReport extends CRM_Core_Page {
   function run() {
   
   	/**
+     * PULL THE CPD DEFAULTS AS DEFINED IN THE ADMIN PAGE
+     */
+    $sql = "SELECT * FROM civi_cpd_defaults";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+  	$arr_defaults = array();
+    $x = 0;
+    while( $dao->fetch( ) ) {   
+       	$arr_defaults[$dao->name] = $dao->value;
+       	$x++;	
+    }
+    
+    // SET VARIABLES FROM DEFAULTS ARRAY
+    if(is_array ($arr_defaults)) {
+    
+    	if(isset($arr_defaults['organization_member_number'])) {
+    		$organization_member_number_field = $arr_defaults['organization_member_number'];
+    	} else {
+    		$organization_member_number_field = 'civicrm_contact.external_identifier';
+    	}
+    	
+    	if(isset($arr_defaults['long_name'])) {
+    		$long_name = $arr_defaults['long_name'];
+    	} else {
+    		$long_name = 'Continuing Professional Development';
+    	}
+    	
+    	if(isset($arr_defaults['short_name'])) {
+    		$short_name = $arr_defaults['short_name'];
+    	} else {
+    		$short_name = 'CPD';
+    	}
+    	
+    } else {
+    		$organization_member_number_field = 'civicrm_contact.external_identifier';
+    		$long_name = 'Continuing Professional Development';
+    		$short_name = 'CPD';
+    }
+  
+  	/**
   	* GET APPLICABLE MEMBER TYPES FOR THE REPORT 
   	* FROM THE civi_cpd_membership_type TABLE
   	* PUT RESULTS IN AN ARRAY
@@ -97,10 +136,16 @@ class CRM_Civicpd_Page_FullReport extends CRM_Core_Page {
 		, civicrm_contact.last_name
 		, civicrm_contact.first_name
 		, civicrm_contact.external_identifier
+		, civicrm_contact.user_unique_id
 		, civicrm_membership.membership_type_id
+		, civicrm_membership.id AS membership_id
+		, civicrm_membership.join_date AS member_since
+		, civicrm_membership_type.name AS member_type
 		FROM civicrm_contact 
 		INNER JOIN civicrm_membership
 		ON civicrm_contact.id = civicrm_membership.contact_id
+		INNER JOIN civicrm_membership_type
+		ON civicrm_membership.membership_type_id = civicrm_membership_type.id
 		ORDER BY civicrm_contact.last_name";
 
     
@@ -114,7 +159,11 @@ class CRM_Civicpd_Page_FullReport extends CRM_Core_Page {
        	$arr_members[$x]["last_name"] = $dao->last_name;
        	$arr_members[$x]["first_name"] = $dao->first_name;
        	$arr_members[$x]["external_identifier"] = $dao->external_identifier;
+       	$arr_members[$x]["user_unique_id"] = $dao->user_unique_id;
+       	$arr_members[$x]["membership_id"] = $dao->membership_id;
        	$arr_members[$x]["membership_type_id"] = $dao->membership_type_id;
+       	$arr_members[$x]["member_type"] = $dao->member_type;
+       	$arr_members[$x]["member_since"] = $dao->member_since;
        	$x++;	
     }
     
@@ -134,9 +183,18 @@ class CRM_Civicpd_Page_FullReport extends CRM_Core_Page {
     			$report_table .= '<tr>';
     			$report_table .= '<td>' . $arr_members[$x]["last_name"] . '</td>';
     			$report_table .= '<td>' . $arr_members[$x]["first_name"] . '</td>';
-    			$report_table .= '<td>' . $arr_members[$x]["external_identifier"] . '</td>';
-    			$report_table .= '<td>' . 'member type' . '</td>';
-    			$report_table .= '<td>' . 'member since' . '</td>';
+    			
+    			if($organization_member_number_field == 'civicrm_contact.user_unique_id'){
+    				$report_table .= '<td>' . $arr_members[$x]["user_unique_id"] . '</td>';
+    			}
+    			elseif($organization_member_number_field == 'civicrm_membership.id') {
+    				$report_table .= '<td>' . $arr_members[$x]["membership_id"] . '</td>';
+    			} else {
+    				$report_table .= '<td>' . $arr_members[$x]["external_identifier"] . '</td>';
+    			}
+    			
+    			$report_table .= '<td>' . $arr_members[$x]["member_type"] . '</td>';
+    			$report_table .= '<td>' . $arr_members[$x]["member_since"] . '</td>';
     	
     			$sql = "SELECT civi_cpd_categories.id AS id
     			 , civi_cpd_categories.category AS category
@@ -173,39 +231,6 @@ class CRM_Civicpd_Page_FullReport extends CRM_Core_Page {
 			       
     // END TABLE
     $report_table .= '</table>';
-    
-    /**
-     * PULL THE CPD NAME FOR THE PAGE TITLE
-     */
-    $sql = "SELECT * FROM civi_cpd_defaults";
-    $dao = CRM_Core_DAO::executeQuery($sql);
-  	$arr_defaults = array();
-    $x = 0;
-    while( $dao->fetch( ) ) {   
-       	$arr_defaults[$dao->name] = $dao->value;
-       	$x++;	
-    }
-    
-    // SET VARIABLES FROM DEFAULTS ARRAY
-    if(is_array ($arr_defaults)) {
-    	
-    	if(isset($arr_defaults['long_name'])) {
-    		$long_name = $arr_defaults['long_name'];
-    	} else {
-    		$long_name = 'Continuing Professional Development';
-    	}
-    	
-    	if(isset($arr_defaults['short_name'])) {
-    		$short_name = $arr_defaults['short_name'];
-    	} else {
-    		$short_name = 'CPD';
-    	}
-    	
-    } else {
-    		$long_name = 'Continuing Professional Development';
-    		$short_name = 'CPD';
-    }
-    
 	
 	// SET PAGE TITLE
     CRM_Utils_System::setTitle(ts('Review ' . $short_name . ' Full Report'));
