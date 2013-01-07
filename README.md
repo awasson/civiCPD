@@ -1,4 +1,5 @@
 ** ABOUT **
+
 civiCRM Continuing Professional Development Extension
 
 The civiCPD extension is a platform agnostic plugin that provides a continuing professional 
@@ -15,6 +16,7 @@ where they can review, edit or add CPD activities and print out their CPD statem
 * Currently only tested on Drupal 7.18 with civiCRM 4.2.x
 
 ** [INSTALLATION] **
+
 1) Upload the CPD module to a directory on your web server. In drupal for example, you might use: /sites/all/extensions
 
 2) Update your extensions paths in civiCRM to recognize your extensions directory.
@@ -35,6 +37,7 @@ the civicpd.civix.php file. It hasn't affected the module or performance so it i
 that we will catch as the module matures.
 
 ** NOTES **
+
 civiCRM contacts will require a membership of some sort in order to be included in the CPD program. 
 
 * In order for users to be able to access the CPD section, the permissions of the underlying CMS 
@@ -50,5 +53,6 @@ or the civicrm_membership id field as determined in the administration page.
 * When civiCPD is uninstalled, the categories and activities database tables will remain in case the system is deleted by accident. 
 
 ** KNOWN BUGS **
+
 [FIXED] If a contact has two membership types and both types are applicable to CPD activities duplicate results will occur.
 
