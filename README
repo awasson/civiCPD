@@ -51,3 +51,4 @@ or the civicrm_membership id field as determined in the administration page.
 
 ** KNOWN BUGS **
 [FIXED] If a contact has two membership types and both types are applicable to CPD activities duplicate results will occur.
+
