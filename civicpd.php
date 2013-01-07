@@ -85,6 +85,7 @@ function civicpd_civicrm_navigationMenu( &$params ) {
 
 
 // Adding a tab to the contact record
+/*
 function civicpd_civicrm_tabs( &$tabs, $contactID ) {
     // let's add a new tab for CPD Activities
     $url = CRM_Utils_System::url( 'civicrm/civicpd/report', "reset=1&snippet=2");
@@ -93,6 +94,7 @@ function civicpd_civicrm_tabs( &$tabs, $contactID ) {
                      'title' => 'CDP Activities',
                      'weight' => 300 );
 }
+*/
 
 /**
  * Use hook_civicrm_pageRun to set the default variables
