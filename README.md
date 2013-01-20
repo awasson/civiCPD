@@ -1,5 +1,7 @@
 ** ABOUT **
 
+NOTE: This extension is ready for testing but is still in development and currrently lacks the feature to export reports
+
 civiCRM Continuing Professional Development Extension
 
 The civiCPD extension is a platform agnostic plugin that provides a continuing professional 
