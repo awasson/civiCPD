@@ -64,20 +64,19 @@ p.cpd-message {
 
 <script type="text/javascript">
 <!-- 
-	var jq = jQuery.noConflict();
 	
 	jQuery(function(){
 	
 	
-		jq('#select_year').change(function() {
-			var reportyear = jq(this).attr('value');
+		cj('#select_year').change(function() {
+			var reportyear = cj(this).attr('value');
 			
-			jq(this).fadeOut('fast', function() {
-    			jq('#report_year').text(reportyear);
-    			jq('#report_year').fadeIn('slow');
+			cj(this).fadeOut('fast', function() {
+    			cj('#report_year').text(reportyear);
+    			cj('#report_year').fadeIn('slow');
   			}); 
   			
-  			jq.ajax({
+  			cj.ajax({
   				type: 'POST',
   				url: '/civicrm/civicpd/reportyear?reset=1&snippet=2',
   				data: { new_year : reportyear },
@@ -91,13 +90,13 @@ p.cpd-message {
 			
 		});
 		
-		jq('#report_year').click(function() {
-			jq(this).fadeOut('fast', function() {
-    			jq('#select_year').fadeIn('slow');
+		cj('#report_year').click(function() {
+			cj(this).fadeOut('fast', function() {
+    			cj('#select_year').fadeIn('slow');
   			});
    		});
    		
-   		jq('#print_button').click(function() {
+   		cj('#print_button').click(function() {
    			window.print();
    		});	
 			

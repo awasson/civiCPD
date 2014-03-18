@@ -20,10 +20,8 @@
 <script type="text/javascript">
 <!-- 
 
-	var jq = jQuery.noConflict();
-
-	jq(function() {
-        jq('#credit_date').datepicker({
+	cj(function() {
+        cj('#credit_date').datepicker({
         	dateFormat: 'yy-mm-dd',
             changeMonth : true,
             changeYear : true,
@@ -33,25 +31,25 @@
     });
     
     
-    jq('.delete.button').click(function(){	
+    cj('.delete.button').click(function(){	
     	
-    	jq('<div></div>').appendTo('body')
+    	cj('<div></div>').appendTo('body')
         	.html('<div><p>Once an activity has been removed, it cannot be restored<br/>without manually re-entering it. Please confirm this deletion.</p></div>')
         	.dialog({
                 modal: true, title: 'DELETE CONFIRMATION', zIndex: 10000, autoOpen: true,
                 width: 'auto', resizable: false,
                 buttons: {
                     Yes: function () {
-                    	jq(this).dialog("close");
+                    	cj(this).dialog("close");
                     	top.location = "{/literal}{$delete_url}{literal}";
                     },
                     No: function () {
-                    	jq(this).dialog("close");
+                    	cj(this).dialog("close");
                     	
                     }
                 },
                 close: function (event, ui) {
-                    jq(this).remove();
+                    cj(this).remove();
                 }
         });
         return false;
