@@ -36,7 +36,7 @@ class CRM_Civicpd_Page_CPDAdmin extends CRM_Core_Page {
   			$arr_posted_membership_types = $_POST['memberships'];  			
   			$sql = "INSERT INTO civi_cpd_membership_type (membership_id) VALUES ";
 			foreach ($arr_posted_membership_types as $item) {
-  				$sql .= "(".$item[0]."),";
+  				$sql .= "(".$item."),";
 			}
 			$sql = rtrim($sql,",");//remove the extra comma
 			$dao = CRM_Core_DAO::executeQuery($sql);
