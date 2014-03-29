@@ -146,77 +146,71 @@ class CRM_Civicpd_Page_FullReport extends CRM_Core_Page {
 		ON civicrm_contact.id = civicrm_membership.contact_id
 		INNER JOIN civicrm_membership_type
 		ON civicrm_membership.membership_type_id = civicrm_membership_type.id
+		WHERE civicrm_contact.first_name IS NOT NULL 
+		AND civicrm_contact.last_name IS NOT NULL
 		ORDER BY civicrm_contact.last_name";
 
     
     $dao = CRM_Core_DAO::executeQuery($sql);
     
-    // SET UP CONTACT ARRAY
-    $arr_members = array();
-    $x = 0;
-    while( $dao->fetch( ) ) {   
-       	$arr_members[$x]["id"] = $dao->id;
-       	$arr_members[$x]["last_name"] = $dao->last_name;
-       	$arr_members[$x]["first_name"] = $dao->first_name;
-       	$arr_members[$x]["external_identifier"] = $dao->external_identifier;
-       	$arr_members[$x]["user_unique_id"] = $dao->user_unique_id;
-       	$arr_members[$x]["membership_id"] = $dao->membership_id;
-       	$arr_members[$x]["membership_type_id"] = $dao->membership_type_id;
-       	$arr_members[$x]["member_type"] = $dao->member_type;
-       	$arr_members[$x]["member_since"] = $dao->member_since;
-       	$x++;	
-    }
-    
     // FLAG FOR LAST CONTACT ID
 	$last_contact_id = "";
     
-    for($x = 0; $x < count($arr_members); $x++ ) {
+    // SET UP CONTACT ARRAY
+    $arr_members = array();
     
-    	// ENSURE THAT THE RECORD ISN'T BLANK AS SOME SEEM TO BE
-		if(!is_null($arr_members[$x]["last_name"]) || !is_null($arr_members[$x]["first_name"])) {
-		
-			// REPORT MEMBER TYPES WE'RE INTERESTED IN && NO DUPLICATES
-			if(in_array ( $arr_members[$x]["membership_type_id"] , $arr_membership_types ) && $arr_members[$x]["id"] != $last_contact_id) {  
-	
-			  	$last_contact_id = $arr_members[$x]["id"];
-			  	
-    			$report_table .= '<tr>';
-    			$report_table .= '<td>' . $arr_members[$x]["last_name"] . '</td>';
-    			$report_table .= '<td>' . $arr_members[$x]["first_name"] . '</td>';
+    // CREATE TEMP TABLE OF ACTIVITIES FOR THIS YEAR ONLY
+    $tempsql = "SELECT * FROM civi_cpd_activities WHERE civi_cpd_activities.credit_date >= '" . $_SESSION["report_year"] . "-01-01' AND civi_cpd_activities.credit_date  < '" . ($_SESSION["report_year"] + 1) . "-01-01'";
+    $tempQuery = 'CREATE TEMPORARY TABLE civi_cpd_activities_temp1 AS ' . $tempsql;
+    CRM_Core_DAO::executeQuery($tempQuery);
+
+    while( $dao->fetch( ) ) {   
+
+       	// ENSURE THAT THE RECORD ISN'T BLANK
+		if(!is_null($dao->last_name) || !is_null($dao->first_name)) {
+
+       		// REPORT MEMBER TYPES WE'RE INTERESTED IN && NO DUPLICATES
+			if(in_array ( $dao->membership_type_id , $arr_membership_types ) && $dao->id != $last_contact_id) {
+				
+				$last_contact_id = $dao->id;	
+				
+				$report_table .= '<tr>';
+    			$report_table .= '<td>' . $dao->last_name . '</td>';
+    			$report_table .= '<td>' . $dao->first_name . '</td>';
     			
     			if($organization_member_number_field == 'civicrm_contact.user_unique_id'){
-    				$report_table .= '<td>' . $arr_members[$x]["user_unique_id"] . '</td>';
+    				$report_table .= '<td>' . $dao->user_unique_id . '</td>';
     			}
     			elseif($organization_member_number_field == 'civicrm_membership.id') {
-    				$report_table .= '<td>' . $arr_members[$x]["membership_id"] . '</td>';
+    				$report_table .= '<td>' . $dao->membership_id . '</td>';
     			} else {
-    				$report_table .= '<td>' . $arr_members[$x]["external_identifier"] . '</td>';
+    				$report_table .= '<td>' . $dao->external_identifier . '</td>';
     			}
     			
-    			$report_table .= '<td>' . $arr_members[$x]["member_type"] . '</td>';
-    			$report_table .= '<td>' . $arr_members[$x]["member_since"] . '</td>';
-    	
+    			$report_table .= '<td>' . $dao->member_type . '</td>';
+    			$report_table .= '<td>' . $dao->member_since . '</td>';
+    			
+
     			$sql = "SELECT civi_cpd_categories.id AS id
     			 , civi_cpd_categories.category AS category
-    			 , SUM(civi_cpd_activities.credits) AS credits
+    			 , SUM(civi_cpd_activities_temp1.credits) AS credits
     			 , civi_cpd_categories.minimum
     			 , civi_cpd_categories.maximum
     			 , civi_cpd_categories.description
     			 FROM civi_cpd_categories
-    			 LEFT OUTER JOIN civi_cpd_activities
-    			 ON civi_cpd_activities.category_id = civi_cpd_categories.id
-    			 AND civi_cpd_activities.contact_id = " . $arr_members[$x]["id"] . "
-    			 AND EXTRACT(YEAR FROM civi_cpd_activities.credit_date) = " . $_SESSION["report_year"] . "
+    			 LEFT OUTER JOIN civi_cpd_activities_temp1
+    			 ON civi_cpd_activities_temp1.category_id = civi_cpd_categories.id
+    			 AND civi_cpd_activities_temp1.contact_id = " . $dao->id . "
     			 GROUP BY civi_cpd_categories.id";
     			 
-    			$dao = CRM_Core_DAO::executeQuery($sql);
+    			 $subdao = CRM_Core_DAO::executeQuery($sql);
     		
     			$total_credits = 0;
     			$sub_cells = "";
-    		
-    			while( $dao->fetch( ) ) { 
-    				$total_credits += abs($dao->credits); 
-       				$sub_cells .= '<td>' . abs($dao->credits) . '</td>';	
+    			
+    			while( $subdao->fetch( ) ) { 
+    				$total_credits += abs($subdao->credits); 
+    				$sub_cells .= '<td>' . abs($subdao->credits) . '</td>';       				
     			}
     		
     			$report_table .= '<td>' . $total_credits . '</td>';
@@ -224,9 +218,12 @@ class CRM_Civicpd_Page_FullReport extends CRM_Core_Page {
     			$report_table .= $sub_cells;
     	
     			$report_table .= '</tr>';
-    		}	
-    	}
-    	
+
+			}
+       	
+       	}
+       	
+       	
     }
 			       
     // END TABLE
