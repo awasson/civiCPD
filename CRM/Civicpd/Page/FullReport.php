@@ -21,6 +21,9 @@ require_once 'CRM/Core/Page.php';
 class CRM_Civicpd_Page_FullReport extends CRM_Core_Page {
   function run() {
   
+  	// ADD STYLESHEET
+	CRM_Core_Resources::singleton()->addStyleFile('ca.lunahost.civicpd', 'civicpd.css');
+  
   	/**
      * PULL THE CPD DEFAULTS AS DEFINED IN THE ADMIN PAGE
      */

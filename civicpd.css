@@ -1,0 +1,4 @@
+/* Remove CRM Status from CPD Pages */
+body.page-civicrm-civicpd .crm-footer .status {
+    display: none;
+}

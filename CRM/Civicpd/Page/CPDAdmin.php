@@ -19,6 +19,9 @@ require_once 'CRM/Core/Page.php';
 class CRM_Civicpd_Page_CPDAdmin extends CRM_Core_Page {
   function run() {
   
+  	// ADD STYLESHEET
+	CRM_Core_Resources::singleton()->addStyleFile('ca.lunahost.civicpd', 'civicpd.css');
+  
   	// HANDLE ANY PRE-PROCESSING FIRST
   	if( isset( $_POST['action'] ) &&  $_POST['action'] == "update" ) {
   	
