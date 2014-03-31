@@ -67,6 +67,9 @@ p.cpd-message {
 	
 	jQuery(function(){
 	
+		// Change Breadcrumb to swap CiviCRM Contact Dashboard for link to CiviCRM
+		cj('#branding div.breadcrumb').html('<a href="/">Home</a> » <a href="/civicrm/user">Contact Dashboard</a> » CPD Reporting'); 
+	
 	
 		cj('#select_year').change(function() {
 			var reportyear = cj(this).attr('value');
