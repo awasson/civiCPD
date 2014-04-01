@@ -39,6 +39,12 @@
   </tbody>
 </table>
 
+<div id="cover"></div>
+<div id="progressbar" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+	<div class="ui-progressbar-value ui-widget-header ui-corner-left ui-corner-right" style="display: block; width: 20em; height: 1em;"></div>
+</div>
+
+
 {literal}
 
 <style type="text/css">
@@ -64,12 +70,18 @@ p.cpd-message {
 
 <script type="text/javascript">
 <!-- 
-	
+
+	cj.fn.center = function () {
+    	this.css("position","fixed");
+    	this.css("top", (cj(window).height() / 2) - (this.outerHeight() / 2));
+    	this.css("left", (cj(window).width() / 2) - (this.outerWidth() / 2));
+    	return this;
+	}
+
 	jQuery(function(){
 	
 		// Change Breadcrumb to swap CiviCRM Contact Dashboard for link to CiviCRM
 		cj('#branding div.breadcrumb').html('<a href="/">Home</a> » <a href="/civicrm/user">Contact Dashboard</a> » CPD Reporting'); 
-	
 	
 		cj('#select_year').change(function() {
 			var reportyear = cj(this).attr('value');
@@ -78,6 +90,12 @@ p.cpd-message {
     			cj('#report_year').text(reportyear);
     			cj('#report_year').fadeIn('slow');
   			}); 
+  			
+  			// Add Loading Spinner
+			cj('#cover').css({'width': '100%', 'height': '100%', 'left': 0, 'top': 0, 'background-color': '#000000', 'opacity': '0.8'}).fadeIn( 'slow', function() {
+    			cj('.ui-progressbar-value').css({'text-align': 'center','font-size': '1em','font-weight': 'normal', 'padding':'0.15em 0 0.35em'}).text('loading . . .');
+    			cj('#progressbar').css({'padding': 0,'height': '1.4em'}).fadeIn('slow').center();
+			});
   			
   			cj.ajax({
   				type: 'POST',
@@ -91,6 +109,10 @@ p.cpd-message {
   				}
 			});
 			
+		});
+		
+		cj(window).resize(function(){
+   			cj('#progressbar').center();
 		});
 		
 		cj('#report_year').click(function() {

@@ -2,3 +2,15 @@
 body.page-civicrm-civicpd .crm-footer .status {
     display: none;
 }
+
+/* Remove Footer from CPD Pages for BCSLA */
+body.page-civicrm-civicpd .crm-footer {
+    display: none;
+}
+
+/* Hide Progress Bar and cover */
+body.page-civicrm-civicpd #progressbar,
+body.page-civicrm-civicpd #cover {
+	display: none;
+	position: fixed;
+}
