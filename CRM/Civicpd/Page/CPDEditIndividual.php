@@ -15,11 +15,31 @@
 */
 require_once 'CRM/Core/Page.php';
 
-class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
+class CRM_Civicpd_Page_CPDEditIndividual extends CRM_Core_Page {
   function run() {
   
   	// ADD STYLESHEET
 	CRM_Core_Resources::singleton()->addStyleFile('ca.lunahost.civicpd', 'civicpd.css');
+	
+	// Find the ID of the person viewing this page 
+    $session = CRM_Core_Session::singleton();
+	$admin_id = $session->get('userID');
+
+	// Find the ID of the person we want to edit
+	if(isset($_GET['cid'])) {
+    	// id exists
+    	$contact_id = $_GET['cid'];
+    	$sql = "SELECT civicrm_contact.display_name FROM civicrm_contact WHERE civicrm_contact.id = " . $contact_id;
+    	$dao = CRM_Core_DAO::executeQuery($sql);
+    	while( $dao->fetch( ) ) {    
+    		$display_name = $dao->display_name;
+    	}
+    	
+	} else {
+		// id doesn't exist, kick them back to the main report
+		header('Location: /civicrm/civicpd/fullreport');
+		exit;
+	}
   
   	/**
      * PULL THE CPD NAME FOR THE PAGE TITLE
@@ -68,12 +88,6 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
 				
 				// *** Set up some defaults ***	//
 				$output = "";
-			
-				if(!isset($contact_id)) {
-					// If we haven't set a contact ID then find and use the ID of the person viewing this page 
-    				$session = CRM_Core_Session::singleton();
-					$contact_id = $session->get('userID');
-				}
 				
 				if(isset($_REQUEST['catid'])) {
 					$category_id = $_REQUEST['catid'];
@@ -92,9 +106,9 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
 		
 				switch ($action) {
   				case 'new':
-  				
+
 					// Insert new activity under this category for this contact for this time period.
-   					CRM_Utils_System::setTitle(ts('Insert A New ' . $short_name . ' Activity'));
+   					CRM_Utils_System::setTitle(ts('Insert A New ' . $short_name . ' Activity for ' . $display_name));
    					
    					$sql = "SELECT * FROM civi_cpd_categories WHERE id = " . $category_id;
    					$dao = CRM_Core_DAO::executeQuery($sql);
@@ -103,8 +117,9 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    						$category = $dao->category;
    					}
    					
-   					$output = '<form method="post" action="/civicrm/civicpd/report">
+   					$output = '<form name="newactivity" method="post" action="/civicrm/civicpd/individual">
   								<input type="hidden" value="insert" name="action">
+  								<input type="hidden" value="'.$contact_id.'" name="cid">
   								<input type="hidden" value="'. $category_id .'" name="category_id">
   									<table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
     									<tbody>
@@ -138,9 +153,9 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
   									</table>
 								</form>';
 					
-					$this->assign('sub_title', 'Use the form below to insert a new ' . $long_name . ' <em>' . $category . '</em> activity'); 
+					$this->assign('sub_title', 'Use the form below to insert a new ' . $long_name . ' <em>' . $category . '</em> activity for ' . $display_name); 
 					
-					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/report?clear\';" />'); 
+					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/individual?cid=' . $contact_id . '&clear\';" />'); 
 					
 					$this->assign('output', $output);
 					
@@ -154,8 +169,8 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    					if(isset($_GET['activity_id'])) {
    						$activity_id = $_GET['activity_id'];
    					} else {
-   						// No activity_id, nothing to do, so redirect to the report page
-   						$querystring = "/civicrm/civicpd/report";
+   						// No activity_id, nothing to do, so redirect to the admin individual report page
+   						$querystring = "/civicrm/civicpd/individual?id=" . $contact_id;
     					header("Location: $querystring");
    					}
    					
@@ -184,8 +199,9 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    						$category = $dao->category;
    					}
    					
-   					$output = '<form method="post" action="/civicrm/civicpd/report">
+   					$output = '<form name="editactivity" method="post" action="/civicrm/civicpd/individual">
   								<input type="hidden" value="update" name="action">
+  								<input type="hidden" value="'.$contact_id.'" name="cid">
   								<input type="hidden" value="'. $activity_id .'" name="activity_id">
   									<table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
     									<tbody>
@@ -227,9 +243,9 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
 					
 					$this->assign('sub_title', 'Use the form below to update this ' . $long_name . ' <em>' . $category . '</em> activity'); 
 					
-					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/report?clear\';" />'); 
+					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/individual?cid=' . $contact_id . '&clear\';" />'); 
 					
-					$this->assign('delete_url', '/civicrm/civicpd/report?action=delete&id=' . $activity_id);
+					$this->assign('delete_url', '/civicrm/civicpd/individual?cid='.$contact_id.'&action=delete&id=' . $activity_id);
 					
 					$this->assign('output', $output);
 					
@@ -241,7 +257,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
 					$_SESSION['cpd_message'] = '';
 				
    					// List out all of the entries in this category (for this contact for this time period) with an edit link beside each item
-   					CRM_Utils_System::setTitle(ts('Update Your ' . $short_name . ' Activities'));
+   					CRM_Utils_System::setTitle(ts('Update ' . $short_name . ' Activities for ' . $display_name));
 										
    					$sql = "SELECT civi_cpd_categories.category
    								, civi_cpd_activities.id AS activity_id
@@ -274,7 +290,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    						
    						$_SESSION['cpd_message'] = "You don't appear to have any CPD activities recorded for this category in " . $_SESSION["report_year"] . ". Please use the form below to record your CPD activities.";
    						
-   						$querystring = "/civicrm/civicpd/EditReport?action=new&catid=" . $category_id;
+   						$querystring = "/civicrm/civicpd/editindividual?cid=".$contact_id."&action=new&catid=" . $category_id;
     					header("Location: $querystring");
     					
     					exit;
@@ -292,15 +308,8 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
     									<td width="60%" valign="top">'. $dao->notes .'</td>
     									<td width="10%" valign="top" style="text-align:center;">';
     						
-    						// ARE THEY ALLOWED TO EDIT THIS?
-    						if($_SESSION["report_year"] > (date("Y") - $member_update_limit)) {
-    							$output .= 	'<a href="/civicrm/civicpd/EditReport?action=edit&amp;activity_id=' . $activity_id . '">edit</a>';
-    						} 
-    						elseif ($member_update_limit==0) {
-    							$output .= 	'<a href="/civicrm/civicpd/EditReport?action=edit&amp;activity_id=' . $activity_id . '">edit</a>';
-    						} 	else {
-    							$output .= 	'locked';
-    						}			
+    						$output .= 	'<a href="/civicrm/civicpd/editindividual?cid=' .$contact_id. '&action=edit&activity_id=' . $activity_id . '">edit</a>';
+    								
     						$output .= 	'</td></tr>';
   									
   						}
@@ -309,10 +318,10 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    					
    					$output .= '</table>';
    					
-   					$this->assign('sub_title', 'Update your ' . $long_name . ' <em>' . $category . '</em> activities'); 
-   					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/report\';" />'); 
+   					$this->assign('sub_title', 'Update ' . $long_name . ' <em>' . $category . '</em> activities for ' . $display_name); 
+   					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/individual?cid=' . $contact_id . '&clear\';" />'); 
    					$this->assign('new_button', '<div style="display: inline-block; margin-bottom: -19px; margin-top: 20px;">
-												<a title="New ' . $category . ' Activity" class="button" href="/civicrm/civicpd/EditReport?action=new&catid=' . $category_id . '">
+												<a title="New ' . $category . ' Activity" class="button" href="/civicrm/civicpd/editindividual?cid='.$contact_id.'&amp;action=new&amp;catid=' . $category_id . '">
                 									<span><div class="icon dropdown-icon"></div>New ' . $category . ' Activity</span>
                 								</a>
                 							</div>');
@@ -327,13 +336,15 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
 			
 			} else {
 					// WE DON'T HAVE A REASON TO BE HERE AND SHOULD REDIRECT TO THE CATEGORIES PAGE
-    				header('Location: /civicrm/civicpd/report');
+					$querystring = "/civicrm/civicpd/individual?cid=" . $contact_id;
+    				header("Location: $querystring");
     				exit;
     		}
 		
 		} else {
 			// WE DON'T HAVE A REASON TO BE HERE AND SHOULD REDIRECT TO THE CATEGORIES PAGE
-    		header('Location: /civicrm/civicpd/report');
+    		$querystring = "/civicrm/civicpd/individual?cid=" . $contact_id;
+    		header("Location: $querystring");
     		exit;
     	}
    	

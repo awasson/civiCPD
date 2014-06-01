@@ -178,8 +178,8 @@ class CRM_Civicpd_Page_FullReport extends CRM_Core_Page {
 				$last_contact_id = $dao->id;	
 				
 				$report_table .= '<tr>';
-    			$report_table .= '<td>' . $dao->last_name . '</td>';
-    			$report_table .= '<td>' . $dao->first_name . '</td>';
+    			$report_table .= '<td><a href="/civicrm/civicpd/individual?clear&amp;cid='.$dao->id.'" title="Edit/Update this record">' . $dao->last_name . '</a></td>';
+    			$report_table .= '<td><a href="/civicrm/civicpd/individual?clear&amp;cid='.$dao->id.'" title="Edit/Update this record">' . $dao->first_name . '</a></td>';
     			
     			if($organization_member_number_field == 'civicrm_contact.user_unique_id'){
     				$report_table .= '<td>' . $dao->user_unique_id . '</td>';
