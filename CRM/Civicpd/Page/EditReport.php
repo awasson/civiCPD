@@ -127,6 +127,10 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
         										</td>
       										</tr>
       										<tr>
+        										<td width="5%" valign="top" nowrap="nowrap">Details:</td>
+        										<td width="60%"><textarea class="frm" rows="4" cols="42" name="details"></textarea></td>
+      										</tr>
+      										<tr>
         										<td width="5%" valign="top" nowrap="nowrap">Notes:</td>
         										<td width="60%"><textarea class="frm" rows="4" cols="42" name="notes"></textarea></td>
       										</tr>
@@ -163,6 +167,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    							civi_cpd_activities.credit_date, 
    							civi_cpd_activities.credits, 
    							civi_cpd_activities.activity, 
+   							civi_cpd_activities.details,
    							civi_cpd_activities.notes 
    							FROM civi_cpd_activities 
    							INNER JOIN civi_cpd_categories 
@@ -176,6 +181,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    						$credit_date	= $dao->credit_date;
    						$credits		= $dao->credits;
    						$activity		= $dao->activity;
+   						$details		= $dao->details;
    						$notes			= $dao->notes;
    					}
 
@@ -206,6 +212,10 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
             											</tbody>
           											</table>
         										</td>
+      										</tr>
+      										<tr>
+        										<td width="5%" valign="top" nowrap="nowrap">Details:</td>
+        										<td width="60%"><textarea class="frm" rows="4" cols="42" name="details">' . $details . '</textarea></td>
       										</tr>
       										<tr>
         										<td width="5%" valign="top" nowrap="nowrap">Notes:</td>
@@ -248,6 +258,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    								, civi_cpd_activities.credit_date
    								, civi_cpd_activities.credits
    								, civi_cpd_activities.activity
+   								, civi_cpd_activities.details
    								, civi_cpd_activities.notes 
    								FROM civi_cpd_categories 
    								INNER JOIN civi_cpd_activities 
@@ -264,7 +275,8 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
     								<th width="15%">Date</th>
     								<th width="5%">Credits</th>
     								<th width="20%">Activity</th>
-    								<th width="50%">Notes</th>
+    								<th width="25%">Details</th>
+    								<th width="25%">Notes</th>
     								<th width="10%">Action</th>
   								</tr>';
    					
@@ -289,7 +301,8 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
     									<td width="15%" valign="top">'. date("M d, Y", strtotime("$dao->credit_date")) .'</td>
     									<td width="5%" align="center" valign="top">'. abs($dao->credits) .'</td>
     									<td width="20%" valign="top">'. $dao->activity .'</td>
-    									<td width="60%" valign="top">'. $dao->notes .'</td>
+    									<td width="25%" valign="top">'. $dao->details .'</td>
+    									<td width="25%" valign="top">'. $dao->notes .'</td>
     									<td width="10%" valign="top" style="text-align:center;">';
     						
     						// ARE THEY ALLOWED TO EDIT THIS?
@@ -311,11 +324,15 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
    					
    					$this->assign('sub_title', 'Update your ' . $long_name . ' <em>' . $category . '</em> activities'); 
    					$this->assign('return_button', '<input type="button" name="return" id="return" value="Return to Reporting Page" class="form-submit-inline" onclick="top.location=\'/civicrm/civicpd/report\';" />'); 
-   					$this->assign('new_button', '<div style="display: inline-block; margin-bottom: -19px; margin-top: 20px;">
+   					
+   					if($_SESSION["report_year"] > (date("Y") - $member_update_limit) || $member_update_limit==0) {
+   						$this->assign('new_button', '<div style="display: inline-block; margin-bottom: -19px; margin-top: 20px;">
 												<a title="New ' . $category . ' Activity" class="button" href="/civicrm/civicpd/EditReport?action=new&catid=' . $category_id . '">
                 									<span><div class="icon dropdown-icon"></div>New ' . $category . ' Activity</span>
                 								</a>
+                	
                 							</div>');
+   					}
    					
    					$this->assign('output', $output);
    					

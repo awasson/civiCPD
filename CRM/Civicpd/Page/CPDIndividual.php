@@ -83,9 +83,10 @@ class CRM_Civicpd_Page_CPDIndividual extends CRM_Core_Page {
 				$credit_date	= $_POST['credit_date'];
 				$credits		= $_POST['credits'];
 				$activity		= mysql_real_escape_string($_POST['activity']);
+				$details		= mysql_real_escape_string($_POST['details']);
 				$notes			= mysql_real_escape_string($_POST['notes']);
    				
-				$sql = "INSERT INTO civi_cpd_activities(contact_id, category_id, credit_date, credits, activity, notes) VALUES('".$contact_id."','".$category_id."','".$credit_date."','".$credits."','".$activity."','".$notes."')";
+				$sql = "INSERT INTO civi_cpd_activities(contact_id, category_id, credit_date, credits, activity, details, notes) VALUES('".$contact_id."','".$category_id."','".$credit_date."','".$credits."','".$activity."','".$details."','".$notes."')";
 				CRM_Core_DAO::executeQuery($sql);
    				
 				break;
@@ -100,8 +101,9 @@ class CRM_Civicpd_Page_CPDIndividual extends CRM_Core_Page {
    					$credit_date	= $_POST['credit_date'];
    					$credits		= $_POST['credits'];
    					$activity		= mysql_real_escape_string($_POST['activity']);
+   					$details		= mysql_real_escape_string($_POST['details']);
    					$notes			= mysql_real_escape_string($_POST['notes']);
-   					$sql = "UPDATE civi_cpd_activities SET credit_date = '".$credit_date."', credits = ".$credits.", activity = '".$activity."', notes = '".$notes."' WHERE id =" . $activity_id;
+   					$sql = "UPDATE civi_cpd_activities SET credit_date = '".$credit_date."', credits = ".$credits.", activity = '".$activity."', details = '".$details."', notes = '".$notes."' WHERE id =" . $activity_id;
    					CRM_Core_DAO::executeQuery($sql); 
    				}
    				break;
