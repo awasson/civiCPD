@@ -21,6 +21,58 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
   
   	// ADD STYLESHEET
 	CRM_Core_Resources::singleton()->addStyleFile('ca.lunahost.civicpd', 'civicpd.css');
+	
+	
+	/**
+     * PULL THE CPD NAME FOR THE PAGE TITLE
+     */
+    $sql = "SELECT * FROM civi_cpd_defaults";
+    $dao = CRM_Core_DAO::executeQuery($sql);
+  	$arr_defaults = array();
+    $x = 0;
+    while( $dao->fetch( ) ) {   
+       	$arr_defaults[$dao->name] = $dao->value;
+       	$x++;	
+    }
+    
+    // SET VARIABLES FROM DEFAULTS ARRAY
+    if(is_array ($arr_defaults)) {
+    	
+    	if(isset($arr_defaults['member_update_limit'])) {
+    		$member_update_limit = $arr_defaults['member_update_limit'];
+    	} else {
+    		$member_update_limit = 0;
+    	}
+    
+    	if(isset($arr_defaults['organization_member_number'])) {
+    		$organization_member_number_field = $arr_defaults['organization_member_number'];
+    	} else {
+    		$organization_member_number_field = 'civicrm_contact.external_identifier';
+    	}
+    	
+    	if(isset($arr_defaults['long_name'])) {
+    		$long_name = $arr_defaults['long_name'];
+    	} else {
+    		$long_name = 'Continuing Professional Development';
+    	}
+    	
+    	if(isset($arr_defaults['short_name'])) {
+    		$short_name = $arr_defaults['short_name'];
+    	} else {
+    		$short_name = 'CPD';
+    	}
+    	
+    } else {
+    		$member_update_limit = 0;
+    		$organization_member_number_field = 'civicrm_contact.external_identifier';
+    		$long_name = 'Continuing Professional Development';
+    		$short_name = 'CPD';
+    }
+
+  
+    // Set the page-title
+    CRM_Utils_System::setTitle(ts($short_name . ' Reporting'));
+
   	
   	/**
 	 * Preprocess this page before we do anything 
@@ -72,6 +124,17 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
 				$activity		= mysql_real_escape_string($_POST['activity']);
 				$details		= mysql_real_escape_string($_POST['details']);
 				$notes			= mysql_real_escape_string($_POST['notes']);
+				
+				/*
+				 * prevent people from side-stepping the cutoff dates 
+				 * Check the dates and if they're cheating, boot them back to the summary page  
+				 */
+				if(date("Y", strtotime($credit_date)) <= (date("Y") - $member_update_limit) && $member_update_limit != 0) {
+					$_SESSION['cpd_error_year'] = true;
+					header('Location: /civicrm/civicpd/report');
+    				exit;
+				}
+				
    				
 				$sql = "INSERT INTO civi_cpd_activities(contact_id, category_id, credit_date, credits, activity, details, notes) VALUES('".$contact_id."','".$category_id."','".$credit_date."','".$credits."','".$activity."','".$details."','".$notes."')";
 				CRM_Core_DAO::executeQuery($sql);
@@ -90,6 +153,18 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
    					$activity		= mysql_real_escape_string($_POST['activity']);
    					$details		= mysql_real_escape_string($_POST['details']);
    					$notes			= mysql_real_escape_string($_POST['notes']);
+   					
+   					/*
+				 	 * Prevent people from side-stepping the cutoff dates
+				 	 * Check the dates and if they're cheating, boot them back to the summary page   
+				 	 */
+					if(date("Y", strtotime($credit_date)) <= (date("Y") - $member_update_limit) && $member_update_limit != 0) {
+						$_SESSION['cpd_error_year'] = true;
+						header('Location: /civicrm/civicpd/report');
+    					exit;
+					}
+					
+
    					$sql = "UPDATE civi_cpd_activities SET credit_date = '".$credit_date."', credits = ".$credits.", activity = '".$activity."', details = '".$details."', notes = '".$notes."' WHERE id =" . $activity_id;
    					CRM_Core_DAO::executeQuery($sql); 
    				}
@@ -111,57 +186,6 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
    				break;
 		}
  	}
- 	
- 	
- 	/**
-     * PULL THE CPD NAME FOR THE PAGE TITLE
-     */
-    $sql = "SELECT * FROM civi_cpd_defaults";
-    $dao = CRM_Core_DAO::executeQuery($sql);
-  	$arr_defaults = array();
-    $x = 0;
-    while( $dao->fetch( ) ) {   
-       	$arr_defaults[$dao->name] = $dao->value;
-       	$x++;	
-    }
-    
-    // SET VARIABLES FROM DEFAULTS ARRAY
-    if(is_array ($arr_defaults)) {
-    	
-    	if(isset($arr_defaults['member_update_limit'])) {
-    		$member_update_limit = $arr_defaults['member_update_limit'];
-    	} else {
-    		$member_update_limit = 0;
-    	}
-    
-    	if(isset($arr_defaults['organization_member_number'])) {
-    		$organization_member_number_field = $arr_defaults['organization_member_number'];
-    	} else {
-    		$organization_member_number_field = 'civicrm_contact.external_identifier';
-    	}
-    	
-    	if(isset($arr_defaults['long_name'])) {
-    		$long_name = $arr_defaults['long_name'];
-    	} else {
-    		$long_name = 'Continuing Professional Development';
-    	}
-    	
-    	if(isset($arr_defaults['short_name'])) {
-    		$short_name = $arr_defaults['short_name'];
-    	} else {
-    		$short_name = 'CPD';
-    	}
-    	
-    } else {
-    		$member_update_limit = 0;
-    		$organization_member_number_field = 'civicrm_contact.external_identifier';
-    		$long_name = 'Continuing Professional Development';
-    		$short_name = 'CPD';
-    }
-
-  
-    // Set the page-title
-    CRM_Utils_System::setTitle(ts($short_name . ' Reporting'));
     
     /**
      * After processing actions above, Query Activities table: 
@@ -170,6 +194,14 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
      * AND credit_date = 'the year in question' 
      * GROUP BY Categories 
      */
+    
+    // Check for entry year errors
+    if(isset($_SESSION['cpd_error_year']) && $_SESSION['cpd_error_year'] == true) {
+    	$this->assign('cpd_error_year', true);
+    	$_SESSION['cpd_error_year'] = false;
+    } else {
+    	$this->assign('cpd_error_year', false);
+    }
 		 
 	// Get the name and membership number
 	// Membership number will be external_identifier
@@ -251,16 +283,25 @@ class CRM_Civicpd_Page_CPDReport extends CRM_Core_Page {
         				<br/>' .  $dao->description . ' </td>
         			</tr>
         			<tr valign="top">
-        				<td><!-- put in buttons for add edit view -->
-        				<a href="/civicrm/civicpd/EditReport?action=update&amp;catid=' . $dao->id . '">View</a>';
-        		
+        				<td>';
+        /*
+         * THE VIEW BUTTON WILL REDIRECT TO THE NEW BUTTON IF NO RECORDS ARE AVAILABLE FOR THIS CATEGORY
+         * ADD CONDITIONAL TO TEST FOR WHETHER THIS IS OPEN OR CLOSED AND THEN IF CLOSED, 
+         * DO THEY HAVE CREDITS TO VIEW. IF NOT, THE CAN'T VIEW THEM.
+         */				
+        if($_SESSION["report_year"] > (date("Y") - $member_update_limit) || $member_update_limit==0) {
+        	$output	.= '<a href="/civicrm/civicpd/EditReport?action=update&amp;catid=' . $dao->id . '">View</a>';
+        } elseif(abs($dao->credits)>0) {
+        	$output	.= '<a href="/civicrm/civicpd/EditReport?action=update&amp;catid=' . $dao->id . '">View</a>';
+        } else {
+        	$output	.= '<ul><li><em>No ' . $dao->category . ' credits for ' . $_SESSION["report_year"] . '.</em></li></ul>';
+        }
+        	
     	// ARE THEY ALLOWED TO EDIT THIS?
-    	if($_SESSION["report_year"] > (date("Y") - $member_update_limit)) {
+    	if($_SESSION["report_year"] > (date("Y") - $member_update_limit) || $member_update_limit==0) {
     		$output .= 	' | <a href="/civicrm/civicpd/EditReport?action=new&amp;catid=' . $dao->id . '">New</a>';
     	} 
-    	elseif ($member_update_limit==0) {
-    		$output .= 	' | <a href="/civicrm/civicpd/EditReport?action=new&amp;catid=' . $dao->id . '">New</a>';
-    	} 			
+    			
 			
       	$output	.= '</td>
       			</tr>

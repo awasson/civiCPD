@@ -78,7 +78,28 @@ p.cpd-message {
     	return this;
 	}
 
-	jQuery(function(){
+	// Run our code everything else has loaded
+	cj(window).load(function(){
+	
+		// Post entry year errors if they exist
+		{/literal}
+		var cpd_error_year = 0;
+		{if isset($cpd_error_year) && $cpd_error_year > ""} 
+			cpd_error_year = {$cpd_error_year};
+		{/if}
+		{literal}
+		if(cpd_error_year == true) {
+			cj('#crm-notification-container').empty();
+			cj('#crm-notification-container').html('<div class="alert ui-notify-message ui-notify-message-style" style=""><div title="close" class="icon ui-notify-close"> </div><a title="close" href="#" class="ui-notify-cross ui-notify-close">x</a><h1>Error</h1><div class="notify-content">The date you\'ve entered is invalid. You may only enter dates for the cycle open to reporting</div></div>');
+			cj('#crm-notification-container').fadeIn('slow');
+			setTimeout(function(){
+				cj('#crm-notification-container').fadeOut('slow');
+				},7000);
+			cj('.ui-notify-cross.ui-notify-close').click(function(){
+				cj('#crm-notification-container').fadeOut('slow');
+			}); 
+		}
+		
 	
 		// Change Breadcrumb to swap CiviCRM Contact Dashboard for link to CiviCRM
 		cj('#branding div.breadcrumb').html('<a href="/">Home</a> » <a href="/civicrm/user">Contact Dashboard</a> » CPD Reporting'); 

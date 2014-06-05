@@ -87,6 +87,7 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
 				$this->assign('report_year', $_SESSION["report_year"]); 
 				
 				$today = $_SESSION["report_year"] . date("-m-j");
+				
 				$this->assign('today', $today);
 				// *** Set up some defaults *** //
 		
@@ -141,6 +142,8 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
     									</tbody>
   									</table>
 								</form>';
+					
+					$this->assign('credit_date', $today);
 					
 					$this->assign('sub_title', 'Use the form below to insert a new ' . $long_name . ' <em>' . $category . '</em> activity'); 
 					
@@ -234,6 +237,8 @@ class CRM_Civicpd_Page_EditReport extends CRM_Core_Page {
     									</tbody>
   									</table>
 								</form>';
+								
+					$this->assign('credit_date', $credit_date);
 					
 					$this->assign('sub_title', 'Use the form below to update this ' . $long_name . ' <em>' . $category . '</em> activity'); 
 					

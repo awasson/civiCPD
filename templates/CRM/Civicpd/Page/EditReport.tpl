@@ -29,7 +29,7 @@
         	dateFormat: 'yy-mm-dd',
             changeMonth : true,
             changeYear : true,
-            yearRange: '-100y:+1y',
+            yearRange: '{/literal}{$report_year}:{$report_year}{literal}',
             maxDate: '+1y'
         });
     });
@@ -58,6 +58,17 @@
         });
         return false;
     });
+    
+
+    cj('#credit_date').change(function() {
+		var inputDate = cj('#credit_date').val();
+		var validDate = '{/literal}{$report_year}{literal}';
+    
+    	if(Date.parse(inputDate) >= Date.parse(validDate) != true) {
+    		cj('#credit_date').val('{/literal}{$credit_date}{literal}');
+    		alert("* The date you've entered is invalid. \nPlease enter a date within the current reporting cycle.");
+    	}
+	});
         
         
 
