@@ -1,5 +1,5 @@
-CiviTAX: A CiviCPD Continuing Professional Development 
-======================================================
+CiviCPD: Continuing Professional Development
+============================================
 
 JUNE 5, 2014: ADDED SERVER/CLIENT VALIDATION TO PREVENT USERS FROM INSERTING/UPDATING RECORDS THAT HAVE BEEN CLOSED OFF
 
