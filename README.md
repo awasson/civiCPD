@@ -9,7 +9,7 @@ JANUARY 20, 2013: CALL FOR TESTING. PLEASE DOWNLOAD AND TEST! (This extension is
 
 TODO
 ====
-1) Need to add the ability to export the full report as CSV or Excel. Would like to extend this to allow administrators to export reports combining several years in a single report.
+1) Export the full report as CSV or Excel. Have a technique that uses an Excel Class. Seeking permission to enable in this extension.
 
 2) Would like to add the ability for CiviCRM Events to be related to the Continuing Professional Development extension so that events can be set to be CPD applicable. When a member registers for a CPD applicable event a record is automatically logged related to their CPD account. Maybe also add the ability for the system to send an email after a CPD event has passed prompting them to add notes to the record.
 
@@ -24,7 +24,7 @@ Contacts will be able to access the CPD section through their user 'My Contact D
 
 REQUIREMENTS
 ============
-Currently in full use with the latest stable versions of Drupal (7.28) and CiviCRM (4.4.5)
+Tested and compatible with CiviCRM Versions from CiviCRM 4.2.x and up. Currently in use with the latest stable versions of Drupal (7.34) and CiviCRM (4.5.5)
 
 INSTALLATION
 ============
